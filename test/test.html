@@ -11,25 +11,12 @@
 </head>
 
 <body>
-<div></div>
 
-
-<div id="test">
-    <div id="canvas_toolbar">
-        <button id="canvas_btn_toggleDragRect" class="canvas_btn" >选择</button>
-        <button id="canvas_btn_toggleDrawLine" class="canvas_btn" >连线</button>
-        <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" >删除</button>
-        <button id='canvas_btn_addRect'class="canvas_btn" >添加项目表</button>
-        <button id="canvas_btn_clearAll" class="canvas_btn" >清空画布</button>
-        <button id="canvas_btn_test" class="canvas_btn" >测试</button>
-        <button id="canvas_btn_outputData" class="canvas_btn">输出结果</button>
-        <button id="canvas_btn_changeInfo" class="canvas_btn" style="display:none">按键后修改数据</button>
-    </div>
-    <div id="canvas_area">
-        <canvas id="canvas_flowchart" class="canvas_style">
-        </canvas>
-    </div>
+<div id="canvas_area">
+    <canvas id="canvas_flowchart" class="canvas_style">
+    </canvas>
 </div>
+<div id="put_canvas_btn"></div>
 <div id="changeArea" style="display: none">
     <input type="text" id="changeRectName">
     <input type="text" id="changeRectValue">
@@ -41,50 +28,45 @@
 
 </textare>
 
-
 <script src="test.js"></script>
-
-<script>
-    var c=new CanvasFlowChart('canvas_flowchart');
+<script src="client.js"></script>
+<!--<script>
+    var c=new CanvasFlowChart('canvas_flowchart',{
+        putCanvasBtnId:'put_canvas_btn',
+       /* canvasWidth:2000,
+        canvasHeight:1000,*/
+    });
     c.init();
-    $('#canvas_btn_test').on('click',function () {
-        c.initCanvas(c.testList);
-    });
-    $('#canvas_btn_addRect').on('click',function () {
-        c.addRandomRect();
-    });
-    $('#canvas_btn_clearAll').on('click',function () {
-        c.clearCanvas();
-    });
-    $('#canvas_btn_toggleDragRect').on('click',function () {
-        c.toggleDragRect();
-    });
-    $('#canvas_btn_toggleDrawLine').on('click',function () {
-        c.toggleDrawLine();
-    });
-    $('#canvas_btn_toggleDeleteLine').on('click',function () {
-        c.toggleDeleteLine();
-    });
-    $('#canvas_btn_outputData').on('click',function () {
-        var data=c.outputData();
-        //var data='1';
-        $('#showData').text(String(data));
-    });
-
     c.myClickEvent=function () {
         $('#changeArea').show();
-        $('#changeRectBtn').one ('click',function () {
-            c.willReplaceRectText= [{
+        /*$('#changeRectBtn').one ('click',function () {
+            /!*c.willReplaceRectText= [{
                 name:$('#changeRectName').val(),
                 value:[$('#changeRectValue').val()]
             }];
-            c.changeRectInfo();
+            c.changeRectInfo();*!/
+            c.changeRectInfo([{
+                name:$('#changeRectName').val(),
+                value:[$('#changeRectValue').val()]
+            }]);
             $('#changeArea').hide();
-        });
+        });*/
         //c.onchangedRect=null;
 
     };
-
+    $('#changeRectBtn').on ('click',function () {
+        /*c.willReplaceRectText= [{
+         name:$('#changeRectName').val(),
+         value:[$('#changeRectValue').val()]
+         }];
+         c.changeRectInfo();*/
+        var newdata=[{
+            name:$('#changeRectName').val(),
+            value:[$('#changeRectValue').val()]
+        }];
+        c.changeRectInfo(newdata);
+        $('#changeArea').hide();
+    });
 
     /*
      new CanvasFlowChart(canvasId,config)
@@ -124,6 +106,7 @@
      textMarginTop||20;
      textGapHeight||20;
 
+    putCanvasBtnId 放置btn的标签id
 
      *内部调用函数
      init()初始化
@@ -143,8 +126,15 @@
         {name:'1',value:['1','2','3']},
         {name:'2',value:['sadasd']},
      ]
+     创建一个rect需要
+     x:
+     y:
+     text:
+     isCurrent:(true or false)
+
+
      *
      * */
-</script>
+</script>-->
 </body>
 </html>

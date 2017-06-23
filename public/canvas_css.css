@@ -13,19 +13,15 @@ canvas {
     z-index:9999;
 }
 #canvas_area{
-    width: 800px;
-    height: 500px;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    border: 1px solid black;
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
-
+    overflow: scroll;
+    width: 800px;
+    height: 500px;
 }
 #canvas{
     position: absolute;
@@ -42,15 +38,16 @@ canvas {
     z-index: 1;
 }
 #canvas_toolbar{
-    height: 50px;
     width: 800px;
     border: 1px solid black
 ;
 }
 .canvas_btn{
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     display: inline-block;
+    margin-left: 10px;
+    padding: 1px;
 }
 
 .canvas_btn_choosed{
@@ -59,4 +56,91 @@ canvas {
 .canvas_btn_unchecked{
     background: #FFFFFF;
 
+}
+
+#canvas_btn_toggleDragRect div{
+    background: url("../public/img/choose.png") center center;
+    -webkit-background-size:cover;
+ /*   background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_toggleDrawLine div{
+    background: url("../public/img/addline.png") center center;  -webkit-background-size:cover;
+   /* background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_toggleDeleteLine div{
+    background: url("../public/img/delete.png") center center;  -webkit-background-size:cover;
+ /*   background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_addRect div{
+    background: url("../public/img/new.png") center center;  -webkit-background-size:cover;
+   /* background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_clearAll div{
+    background: url("../public/img/clear.png") center center;  -webkit-background-size:cover;
+/*    background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_test div{
+    background: url("../public/img/test.png") center center;  -webkit-background-size:cover;
+   /* background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_outputData div{
+    background: url("../public/img/output.png") center center;  -webkit-background-size:cover;
+   /* background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_saveImg div{
+    background: url("../public/img/download.png") center center;  -webkit-background-size:cover;
+  /*  background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_addHeight div{
+    background: url("../public/img/addheight.png") center center;  -webkit-background-size:cover;
+ /*   background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_reduceHeight div{
+    background: url("../public/img/reduceheight.png") center center;  -webkit-background-size:cover;
+ /*   background-size:cover; width: 100%;
+    height: 100%;*/
+}
+
+#canvas_btn_autoSort div{
+    background: url("../public/img/sort.png") center center;  -webkit-background-size:cover;
+/*    background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_addWidth div{
+    background: url("../public/img/addwidth.png") center center;  -webkit-background-size:cover;
+ /*   background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_reduceWidth div{
+    background: url("../public/img/reducewidth.png") center center;  -webkit-background-size:cover;
+/*    background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_enlarge div{
+    background: url("../public/img/enlarge.png") center center;  -webkit-background-size:cover;
+  /*  background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_shrink div{
+    background: url("../public/img/shrink.png") center center;  -webkit-background-size:cover;
+    /*background-size:cover; width: 100%;
+    height: 100%;*/
+}
+#canvas_btn_recovery div{
+    background: url("../public/img/recovery.png") center center;  -webkit-background-size:cover;
+    /*background-size:cover; width: 100%;
+    height: 100%;*/
+}
+.canvas_btn div{
+    background-size:cover; width: 100%;
+    height: 100%;
 }
