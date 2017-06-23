@@ -211,11 +211,11 @@ CanvasFlowChart.prototype={
                 }
                 if (_this.canLineDraw) {
                     _this.makeTmpLinePoint(e);
-                    /*var moveX = e.pageX - canvas.offsetLeft;
-                     var moveY = e.pageY - canvas.offsetTop;*/
+                    /*var moveX = e.clientX - canvas.getBoundingClientRect().left;
+                     var moveY = e.clientY - canvas.getBoundingClientRect().top;*/
                     canvas.onmouseup = function (e) {
-                        var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                        var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                        var clickX = e.clientX - canvas.getBoundingClientRect().left;
+                        var clickY = e.clientY - canvas.getBoundingClientRect().top;
                         var fixX=clickX*_this.ratio;
                         var fixY=clickY*_this.ratio;
                         var isInLeftRect=false;
@@ -256,8 +256,8 @@ CanvasFlowChart.prototype={
             };
             //button点击事件
             canvas.onmouseup = function (e) {
-                var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                var clickX = e.clientX - canvas.getBoundingClientRect().left;
+                var clickY = e.clientY - canvas.getBoundingClientRect().top;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 if(_this.clickFlag) {
@@ -825,8 +825,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -912,8 +912,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -1100,8 +1100,8 @@ CanvasFlowChart.prototype={
             // 判断拖拽对象是否存在
             if (this.previousSelectedRect != null) {
                 // 取得鼠标位置
-                var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+                var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 this.previousSelectedRect.x = fixX - this.previousSelectedRect.mx;
@@ -1117,8 +1117,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         if(this.canLineDraw=true){
-            var moveX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-            var moveY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+            var moveX = e.clientX - this.canvas.getBoundingClientRect().left;
+            var moveY = e.clientY - this.canvas.getBoundingClientRect().top;
 
             var fixX=moveX*_this.ratio;
             var fixY=moveY*_this.ratio;
