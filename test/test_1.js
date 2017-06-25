@@ -6,7 +6,7 @@ function CanvasFlowChart(id,_config){
     //ratio调整高清屏下canvas模糊问题
     this.ratio=1;
     //缩放
-    this.scale=1;
+    this.scale=1.2;
     this.scaleCount=0;
 
     this.Canvas_lists = [];
@@ -17,9 +17,14 @@ function CanvasFlowChart(id,_config){
     //this.context=this.canvas.getContext('2d');
     //在需要用context的地方用this.canvas.getContext('2d')
     //首页颜色
-    this.firstRectColor=config.firstRectColor||'#21a675';
+    this.firstRectColor=config.firstRectColor||'#ffb61e';
+    this.rectInsideColor='#ffffff';
+    this.rectOutsideColor='#48c0a3';
     //选中的颜色
-    this.shadowBlur=config.shadowBlur||'blue';
+    this.shadowColor=config.shadowBlur||'blue';
+    this.shadowBlur=20;
+    this.shadowOffsetX=10;
+    this.shadowOffsetY=10;
     //canvas宽高
     this.canvasWidth=config.canvasWidth||800;
     this.canvasHeight=config.canvasHeight||500;
@@ -30,6 +35,7 @@ function CanvasFlowChart(id,_config){
     this.buttonHeight=(config.buttonHeight||30);
     this.buttonMarginTop=(config.buttonMarginTop||40);
     this.buttonColor=config.buttonColor||'#48c0a3';
+    this.buttonPadding=(config.buttonPadding||4);
 //关闭按钮
     this.canvasCloseImg=new Image();
     this.canvasCloseImg.src=config.canvasCloseImg||'../public/img/close.png';
@@ -40,7 +46,7 @@ function CanvasFlowChart(id,_config){
     /*this.arrowImg=new Image();
      this.arrowImg.src=config.arrowImg||'../public/right.png';*/
     this.arrowImgWidth=(config.arrowImgWidth||15);
-    this.cicleRadius = 14;
+    this.cicleRadius = 8;
 //区别mouseup和click
     this.moveFlag=false;
     this.clickFlag=false;
@@ -55,9 +61,11 @@ function CanvasFlowChart(id,_config){
     this.lineGap=10;
 //text
     this.textMarginLeft=(config.textMarginLeft||20);
-    this.textMarginTop=(config.textMarginTop||20);
+    this.textMarginTop=(config.textMarginTop||50);
+    this.textMarginTopWithoutFlowName=(config.textMarginTopWithoutFlowName||20);
     this.textGapHeight=(config.textGapHeight||20);
 
+    this.flowNameMarginTop=(config.flowNameMarginTop||30);
     /*canvas_toolbar点击修改全局值*/
     this.canDragRect=true;
     this.canDrawLine=false;
@@ -66,19 +74,13 @@ function CanvasFlowChart(id,_config){
     this.canvas_btns=null;
     this.previousSelectedRect=null;
 
+
     this.testList=[
-        {x: 10, y: 10, text: [{name:'test', value: ['王一', '李2']},{name:'test', value: ['王一', '李2']},{name:'test', value: ['王一', '李2']}]},
-        {x: 250, y: 10, text: [{name:'2131', value: ['王一']}]},
-        {x: 100, y: 200, text: [{name:'dsa', value: ['王一', '李2','1231231']}]},
-        {x: 500, y: 200, text: [{name:'tesssst', value: ['王一', '李2']}]},
-        {x: 500, y: 350, text: [{name:'tessdat', value: ['王一', '李2']}]},
-    ];
-    this.testList=[
-        {x: 10, y: 10, text: [{name:'test', value: ['王一', '李2']},{name:'test', value: ['王一', '李2']},{name:'test', value: ['王一', '李2']}],isCurrent:false},
-        {x: 280, y: 10, text: [{name:'2131', value: ['王一']},{name:'2131', value: ['王一']},{name:'2131', value: ['王一']}],isCurrent:false},
-        {x: 540, y: 10, text: [{name:'dsa', value: ['王一', '李2','1231231']}],isCurrent:true},
-        {x: 260, y: 300, text: [{name:'tesssst', value: ['王一', '李2']}]},
-        {x: 500, y: 300, text: [{name:'tessdat', value: ['王一', '李2']}]},
+        {x: 10, y: 10, flowName:'初审', text: [{name:'是否会审', value: ['是'],something:'2131231'},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
+        {x: 280, y: 10,flowName:'复审', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
+        {x: 540, y: 10,flowName:' ', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2']}],isCurrent:true},
+        {x: 260, y: 300,flowName:'111111111111111111111111111111111111111111111', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
+        {x: 500, y: 300, text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
     ];
     //给定text修改index=i的rect
     this.changeRectInfo=function (newText) {
@@ -115,11 +117,11 @@ function CanvasFlowChart(id,_config){
         if(_confirm){
             if((text instanceof Array)&&text.length){
                 console.log('changeText:',text);
-                console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text])
+                console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
                 this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
                 console.log('canvas_lists,',this.Canvas_lists);
                 this.drawAll();
-                this.initCanvas(this.Canvas_lists.slice(0));
+                //this.initCanvas(this.Canvas_lists.slice(0));
                 //初始化
                 /*this.canvasInfoChangeIndex=null;
                  this.onchangedRectText=[{}];
@@ -131,7 +133,7 @@ function CanvasFlowChart(id,_config){
         }
         _confirm=null;
 
-
+        _this.drawAll();
 
 
     };
@@ -148,14 +150,19 @@ function CanvasFlowChart(id,_config){
     //放到rect里面
     //this.isCurrentPath=false;
     this.currentPathColor='#c93756';
-    this.framePadding=10;
+    this.framePadding=5;
 
     //字体
-    this.NameFont='bold 18px sans-serif';
-    this.ValueFont='13px sans-serif';
-
+    this.NameFontSize=18;
+    this.NameFont='bold '+this.NameFontSize+'px sans-serif';
+    this.ValueFontSize=13;
+    this.ValueFont=this.ValueFontSize+'px sans-serif';
+    this.flowNameFontSize=20;
+    this.flowNameFont='bold '+this.flowNameFontSize+'px sans-serif';
     this.putCanvasBtnId=config.putCanvasBtnId||null;
 
+    //只能观看
+    this.onlyShow=(config.onlyShow==true)?true:false;
 
 }
 
@@ -204,11 +211,11 @@ CanvasFlowChart.prototype={
                 }
                 if (_this.canLineDraw) {
                     _this.makeTmpLinePoint(e);
-                    /*var moveX = e.pageX - canvas.offsetLeft;
-                     var moveY = e.pageY - canvas.offsetTop;*/
+                    /*var moveX = e.clientX - canvas.getBoundingClientRect().left;
+                     var moveY = e.clientY - canvas.getBoundingClientRect().top;*/
                     canvas.onmouseup = function (e) {
-                        var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                        var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                        var clickX = e.clientX - canvas.getBoundingClientRect().left;
+                        var clickY = e.clientY - canvas.getBoundingClientRect().top;
                         var fixX=clickX*_this.ratio;
                         var fixY=clickY*_this.ratio;
                         var isInLeftRect=false;
@@ -249,8 +256,8 @@ CanvasFlowChart.prototype={
             };
             //button点击事件
             canvas.onmouseup = function (e) {
-                var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                var clickX = e.clientX - canvas.getBoundingClientRect().left;
+                var clickY = e.clientY - canvas.getBoundingClientRect().top;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 if(_this.clickFlag) {
@@ -271,32 +278,46 @@ CanvasFlowChart.prototype={
             _this.drawAll()
         };
     },
-    createRectObj : function createRectObj(x, y, text,isCurrent) {
+    createRectObj: function createRectObj(x, y, flowName, text,isCurrent) {
+        var _this=this;
         var _num=0;
+        var context=this.canvas.getContext('2d');
+        var _tmptextwidth=0;
+        context.save();
+        context.font=_this.flowNameFont;
+        var _tmpnamewidth=context.measureText(flowName).width;
+        context.restore();
+        var _tmpvaluewidth=0;
+        var _tmpwidth=0;
+
         for(var _i=0;_i<text.length;_i++){
             var _v=text[_i].value;
             for(var _j=0;_j<_v.length;_j++){
-                _num++
+                _num++;
+                var _vw=Number(context.measureText(_v[_j]).width);
+                if(_vw>_tmpwidth){
+                    _tmpwidth=_vw;
+                }
             }
         }
+        _tmpwidth=_tmpnamewidth>_tmpwidth?_tmpnamewidth:_tmpwidth;
+        var _scale=_this.scaleCount;
         var _iscurrent=isCurrent==true?true:false;
-        var _height=text.length?((_num+text.length-1)*20+100):100;
+        var _height=text.length?((_num+text.length-1)*20+70+_this.textMarginTop):70+_this.textMarginTop;
         //text:[{name:'',value:['']}]
+        var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
+
+        console.log('scaled',myscale);
         return{
-            x : x,
-            y : y,
-            /* text:{
-             //是否会审
-             shouldChecked:text.shouldChecked||true,
-             //审批人名单
-             checkPersonList:text.checkPersonList||[]
-             },*/
+            x : x/myscale,
+            y : y/myscale,
+            flowName:flowName||"",  //(flowName||'流程名称'),
             text:text||[{name:'提示',value:'没有内容'}],
             color : '#e9f1f6',
             isSelected : false,
-            width:200,
+            width:((_tmpwidth>100?_tmpwidth:100)+2*_this.textMarginLeft+50)/myscale,
             /*height:height||150,*/
-            height:_height,
+            height:_height/myscale,
             mx:0,
             my:0,
             canStartLine : false,
@@ -341,15 +362,17 @@ CanvasFlowChart.prototype={
         this.drawAll();
     },
     addRandomRect:function () {
+        /*var _this=this;
+         var myscale=_this.scaleCount<0?Math.pow((_this.scale),Math.abs(_this.scaleCount)):Math.pow((1/_this.scale),Math.abs(_this.scaleCount));_this.scaleCount=0;*/
         // 一个随机大小和位置
         var x = 300;
         var y = 200;
 
         // 一个随机颜色
-        var colors = ["green", "blue", "red", "yellow", "magenta", "orange", "brown", "purple", "pink"];
-        var color = colors[this.randomFromTo(0, 8)];
+        /* var colors = ["green", "blue", "red", "yellow", "magenta", "orange", "brown", "purple", "pink"];
+         var color = colors[this.randomFromTo(0, 8)];*/
 
-        var rect = this.createRectObj(x, y, [{name:'random',value:'123'}]);
+        var rect = this.createRectObj(x, y,'新增流程' ,[{name:'是否会审',value:' '},{name:'审批人',value:' '}]);
         // 把它保存在数组中
         this.Canvas_lists.push(rect);
         this.toggleDragRect();
@@ -364,6 +387,7 @@ CanvasFlowChart.prototype={
         this.startRect=null;
         this.endRect = null;
         this.canvasInfoChangeIndex=null;
+        this.changeScale(0);
         this.drawAll();
     },
     drawBg:function(){
@@ -388,7 +412,7 @@ CanvasFlowChart.prototype={
             context.save();
             context.beginPath();
             context.moveTo(rect.x-_this.framePadding,rect.y);
-            context.arcTo(rect.x-_this.framePadding,rect.y-5,rect.x,rect.y-_this.framePadding,this.framePadding);
+            context.arcTo(rect.x-_this.framePadding,rect.y-_this.framePadding,rect.x,rect.y-_this.framePadding,this.framePadding);
             context.lineTo(rect.x+rect.width,rect.y-_this.framePadding);
             context.arcTo(rect.x+rect.width+_this.framePadding,rect.y-_this.framePadding,rect.x+rect.width+_this.framePadding,rect.y,_this.framePadding);
             context.lineTo(rect.x+rect.width+_this.framePadding,rect.y+rect.height);
@@ -401,7 +425,15 @@ CanvasFlowChart.prototype={
              }else{
              context.fillStyle='#ffffff'
              }*/
-            context.fillStyle='#ffffff'
+            if(i==0){
+                context.fillStyle=_this.firstRectColor;
+            }
+            else{
+                context.fillStyle=_this.rectOutsideColor;
+            }
+            if(rect.isCurrent){
+                context.fillStyle=_this.currentPathColor;
+            }
             context.lineWidth=3;
             context.stroke();
             context.fill();
@@ -415,21 +447,28 @@ CanvasFlowChart.prototype={
             context.rect(rect.x, rect.y, rect.width, rect.height);
             if(x&&y&&context.isPointInPath(x,y)){
                 console.log('inRectPath');
-                context.shadowBlur=20;
-                context.shadowColor=_this.shadowBlur;
+                context.shadowBlur=_this.shadowBlur;
+                context.shadowColor=_this.shadowColor;
+                /* context.shadowOffsetX=_this.shadowOffsetX;
+                 context.shadowOffsetY=_this.shadowOffsetY*/
+            }else{
+                if (_this.previousSelectedRect != null) {_this.previousSelectedRect.isSelected = false;}
             }
             if(rect.isSelected){
-                context.shadowBlur=20;
-                context.shadowColor=_this.shadowBlur;
+                context.shadowBlur=_this.shadowBlur;
+                context.shadowColor=_this.shadowColor;
+                /*context.shadowOffsetX=_this.shadowOffsetX;
+                 context.shadowOffsetY=_this.shadowOffsetY*/
             }
-            if(i==0){
-                context.fillStyle = _this.firstRectColor;
-            }else{
-                context.fillStyle = rect.color;
-            }
-            if(rect.isCurrent){
-                context.fillStyle = _this.currentPathColor;
-            }
+            /*if(i==0){
+             context.fillStyle = _this.firstRectColor;
+             }else{
+             context.fillStyle = rect.color;
+             }*/
+            context.fillStyle = _this.rectInsideColor;
+            /*   if(rect.isCurrent){
+             context.fillStyle = _this.currentPathColor;
+             }*/
             context.strokeStyle = "black";
             context.fill();
             context.stroke();
@@ -475,68 +514,70 @@ CanvasFlowChart.prototype={
             if(_this.endRect_lists.indexOf(0)==-1){
                 _this.endRect_lists.push(0);
             }
-            /* context.save();
-             context.beginPath();
-             context.translate(rect.x+NumCicleRadius+3,rect.y+NumCicleRadius+3);
-             var NumCicleRadius=8;
-             context.arc(0,0,NumCicleRadius,0,Math.PI*2,true);
-             context.closePath();
-             context.font='bold 10px Arial';
-             context.textAlign='center';
-             context.textBaseline='middle';
-             context.fillStyle='blue';
-             context.fillText(String(i+1),0,0);
-             context.stroke();
-             context.restore();*/
-
 
 
             /*填充text*/
             context.save();
             context.beginPath();
             context.translate(rect.x,rect.y);
-            //context.font='40px Arial';
             context.fillStyle='black';
-            /*var checkedInfo=rect.text.shouldChecked?'是':'否';
-             //var textMarginLeft=20,textMarginTop=20,textGapHeight=20;
-             context.fillText('是否会审：'+checkedInfo,textMarginLeft,textMarginTop);
-             if(rect.text.checkPersonList.length){
-             for(var _p=0;_p<rect.text.checkPersonList.length;_p++){
-             var checkPersons=rect.text.checkPersonList[_p];
-             _p==0?context.fillText('参评人员：'+checkPersons,textMarginLeft,textMarginTop+textGapHeight*(_p+1)):context.fillText('                  '+checkPersons,textMarginLeft,textMarginTop+textGapHeight*(_p+1));
-             }
-             }else{
-             context.fillText('参评人员：',textMarginLeft,textMarginTop+textGapHeight);
-             }*/
             var allValueNum=0;
             if(rect.text.length){
                 for(var textObjIndex=0;textObjIndex<rect.text.length;textObjIndex++){
                     var textObj=rect.text[textObjIndex];
                     //对每个textObj进行渲染
                     context.save();
+                    context.save();
+
+                    context.save();
+                    context.font=_this.flowNameFont;
+                    var flowNameWith=context.measureText(rect.flowName).width;
+                    if(flowNameWith>(rect.width-2*_this.textMarginLeft)) {
+                        var scaled = flowNameWith/(rect.width-2*_this.textMarginLeft);
+                        context.scale(1/scaled,1/scaled);
+                    }
+                    context.fillText(rect.flowName,rect.width/2-flowNameWith/2,_this.flowNameMarginTop);
+                    context.restore();
+                    var _textMarginTop=rect.flowName?_this.textMarginTop:_this.textMarginTopWithoutFlowName;
                     context.font=_this.NameFont;
                     var _name=textObj.name+' : ';
                     var nameWidth=context.measureText(_name).width;
                     context.restore();
+                    var valueWidth=0;
                     for(var valueIndex=0;valueIndex<textObj.value.length;valueIndex++){
                         allValueNum++;
                         if(valueIndex==0){
                             context.save();
                             context.font=_this.NameFont;
-                            context.fillText(_name,_this.textMarginLeft,_this.textMarginTop+_this.textGapHeight*(allValueNum));
+                            context.fillText(_name,_this.textMarginLeft,_textMarginTop+_this.textGapHeight*(allValueNum));
                             context.restore();
                         }
                         context.save();
                         context.font=_this.ValueFont;
-                        context.fillText(String(textObj.value[valueIndex]),_this.textMarginLeft+Number(nameWidth),_this.textMarginTop+_this.textGapHeight*(allValueNum));
+                        var _tmpvalueWidth=context.measureText(String(textObj.value[valueIndex]));
+                        if(_tmpvalueWidth>valueWidth){valueWidth=_tmpvalueWidth}
+                        context.fillText(String(textObj.value[valueIndex]),_this.textMarginLeft+Number(nameWidth),_textMarginTop+_this.textGapHeight*(allValueNum));
                         context.restore();
                     }
+
+
+                    var textWidth=nameWidth+valueWidth;
+                    if(textWidth>(rect.width-2*_this.textMarginLeft)) {
+                        var scaled = textWidth/(rect.width-2*_this.textMarginLeft);
+                        context.scale(scaled,scaled);
+                        console.log(scaled);
+                    }
+
+
+
+                    context.restore();
+
                     //考虑画线
                     context.save();
                     context.beginPath();
                     context.lineWidth=1;
-                    context.moveTo(_this.textMarginLeft,_this.textMarginTop+_this.textGapHeight*(allValueNum+0.5));
-                    context.lineTo(rect.width-_this.textMarginLeft,_this.textMarginTop+_this.textGapHeight*(allValueNum+0.5));
+                    context.moveTo(_this.textMarginLeft,_textMarginTop+_this.textGapHeight*(allValueNum+0.5));
+                    context.lineTo(rect.width-_this.textMarginLeft,_textMarginTop+_this.textGapHeight*(allValueNum+0.5));
                     context.fillStyle='black';
                     context.closePath();
                     context.stroke();
@@ -564,8 +605,20 @@ CanvasFlowChart.prototype={
                 context.closePath();
                 //button字
                 context.fillStyle='black';
-                context.font='13px sans-serif';
-                context.fillText(item,5,20);
+                context.font=_this.ValueFont;
+                //context.fillText(item,5,20);
+                context.translate(0,_this.buttonHeight/2);
+                context.save();
+                var textWidth=context.measureText(item).width;
+                var btnwidth=_this.buttonWidth-2*_this.buttonPadding;
+                if(_this.scaleCount<0){
+                    if(textWidth>btnwidth){
+                        var scaled=btnwidth/textWidth;
+                        context.scale(scaled,scaled);
+                    }
+                }
+                context.fillText(item,_this.buttonPadding,_this.buttonPadding);
+                context.restore();
                 context.restore();
             });
 
@@ -662,7 +715,7 @@ CanvasFlowChart.prototype={
              //context.fill();
              }*/
             if(choosed){
-                context.shadowBlur=10;
+                context.shadowBlur=_this.shadowBlur/2;
                 context.shadowColor="blue";
             }
             //context.strokeStyle = "black";
@@ -772,8 +825,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -859,8 +912,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -1047,8 +1100,8 @@ CanvasFlowChart.prototype={
             // 判断拖拽对象是否存在
             if (this.previousSelectedRect != null) {
                 // 取得鼠标位置
-                var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-                var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+                var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
+                var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 this.previousSelectedRect.x = fixX - this.previousSelectedRect.mx;
@@ -1064,8 +1117,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         if(this.canLineDraw=true){
-            var moveX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
-            var moveY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
+            var moveX = e.clientX - this.canvas.getBoundingClientRect().left;
+            var moveY = e.clientY - this.canvas.getBoundingClientRect().top;
 
             var fixX=moveX*_this.ratio;
             var fixY=moveY*_this.ratio;
@@ -1082,7 +1135,7 @@ CanvasFlowChart.prototype={
         this.Canvas_lists=[];
         this.line_lists=[];
         rect_array.forEach(function (item,index) {
-            var _newItem=_this.createRectObj(item.x,item.y,item.text,item.isCurrent);
+            var _newItem=_this.createRectObj(item.x,item.y,item.flowName,item.text,item.isCurrent);
             _this.Canvas_lists.push(_newItem);
             if(index<(rect_array.length-1)){
                 _this.line_lists.push([index,index+1]);
@@ -1098,10 +1151,13 @@ CanvasFlowChart.prototype={
         var _tmp_line_lists=this.line_lists.slice(0);
         var _tmpSort=[];
         var _currentNum=0;
+        var whileCount=0;
+        var line_lists_length=this.line_lists.length;
         if(_tmp_line_lists.length==0){
             _tmpSort=[0]
         }else{
-            while(_tmp_line_lists.length>0){
+
+            while(whileCount<line_lists_length){
                 for(var _i=0;_i<_tmp_line_lists.length;_i++){
                     var lines=_tmp_line_lists[_i];
                     if(lines[0]==_currentNum){
@@ -1109,19 +1165,71 @@ CanvasFlowChart.prototype={
                         _currentNum=lines[1];
                         _tmp_line_lists.splice(_i,1);
                         if(_tmp_line_lists.length<1){
-                            _tmpSort.push(_currentNum);
-                            break;
+                            //_tmpSort.push(_currentNum);
+                            //break;
                         }
+                        console.log('11111')
                     }
+                    console.log('222')
                 }
+
+                whileCount++;
             }
+            /*   while(_tmp_line_lists.length>0){
+             for(var _i=0;_i<_tmp_line_lists.length;_i++){
+             var lines=_tmp_line_lists[_i];
+             if(lines[0]==_currentNum){
+             _tmpSort.push(lines[0]);
+             _currentNum=lines[1];
+             _tmp_line_lists.splice(_i,1);
+             if(_tmp_line_lists.length<1){
+             _tmpSort.push(_currentNum);
+             break;
+             }
+             }
+             }
+             }*/
+            console.log('sort');
+            _tmpSort.push(_currentNum);
+            //var _i=0;
+            /* do{
+             var tmp=_tmp_line_lists.filter(function(item){
+             return item[0]==_currentNum
+             });
+             var getline=tmp[0];
+             if(tmp.length!=0){
+             console.log('getline');
+             _tmpSort.push(getline[0]);
+             _currentNum=getline[1];
+             }else{
+             // break;
+             }
+             _currentNum=tmp[1];
+             _i++;
+             }while(_i<_tmp_line_lists.length);*/
+            /*  for(var _i=0;_i<_tmp_line_lists.length;_i++){
+             /!* var tmp=_tmp_line_lists.filter(function(item){
+             return item[0]==_currentNum
+             });
+             var getline=tmp[0];
+             if(tmp.length!=0){
+             console.log('getline');
+             _tmpSort.push(getline[0]);
+             _currentNum=getline[1];
+             }else{
+             // break;
+             }
+             _currentNum=tmp[1];*!/
+             console.log(1)
+             }*/
         }
+        console.log(_tmpSort)
         this.canvasListSort=_tmpSort;
     },
     outputData:function (){
         var _this=this;
         this.getcanvasListSort();
-        var _tmpSort=this.canvasListSort;
+        var _tmpSort=this.canvasListSort.slice(0);
 
         console.log(_tmpSort);
         //return _tmpSort;
@@ -1131,7 +1239,7 @@ CanvasFlowChart.prototype={
             dataLists.push(_tmp_Canvas_lists[item])
         });
         console.log(dataLists);
-        // return dataLists;
+        //return dataLists;
         var correct=(_this.Canvas_lists.length==_tmpSort.length)?true:false;
         if(correct){
             return dataLists;
@@ -1188,7 +1296,7 @@ CanvasFlowChart.prototype={
     },
     //创建按钮区域
     createButtonArea: function(){
-        var btnString='<div id="canvas_toolbar"> <button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选择流程或连线" ><div></div></button> <button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button> <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button> <button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button><button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> <button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button> <button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button> <button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button> <button id="canvas_btn_saveImg" class="canvas_btn" title="保存图片"><div></div></button> <button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button><button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button> </button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button><button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> </button> </div>';
+        var btnString='<div id="canvas_toolbar"> <button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选择流程或连线" ><div></div></button> <button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button> <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button> <button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button><button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> <button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button> <button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button> <button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button><button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button><button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button> <button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button><button id="canvas_btn_saveImg" class="canvas_btn" title="保存图片"><div></div></button> <button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button><button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button> </button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button><button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> </button> </div>';
         if(this.putCanvasBtnId==null){
             $(btnString).insertAfter($(this.canvas));
         }else{
@@ -1237,6 +1345,15 @@ CanvasFlowChart.prototype={
         });
         $('#canvas_btn_autoSort').on('click',function(){
             _this.autoSort();
+        });
+        $('#canvas_btn_enlarge').on('click',function(){
+            _this.changeScale(1)
+        });
+        $('#canvas_btn_shrink').on('click',function(){
+            _this.changeScale(-1)
+        });
+        $('#canvas_btn_recovery').on('click',function(){
+            _this.changeScale(0)
         })
     },
     //保存图片
@@ -1280,7 +1397,7 @@ CanvasFlowChart.prototype={
         var canvas=this.canvas;
         var context=this.canvas.getContext('2d');
         var _this=this;
-        _this.canvasHeight=_this.canvasHeight+500;
+        _this.canvasHeight=_this.canvasHeight+200;
         this.canvas.width=this.canvasWidth;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
@@ -1292,7 +1409,7 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         this.canvas.width=this.canvasWidth;
-        _this.canvasHeight=_this.canvasHeight==500?500:_this.canvasHeight-500;
+        _this.canvasHeight=_this.canvasHeight==500?500:_this.canvasHeight-200;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
         this.drawAll()
@@ -1346,8 +1463,53 @@ CanvasFlowChart.prototype={
         }
 
         _this.drawAll();
-    }
+    },
 
     //调整scale缩放
+    changeScale:function (option) {
+        //option为操作   -1 是缩小  0是恢复 是放大
+        var _this=this;
+        var myscale;
+        switch(option){
+            case -1:myscale=_this.scale;_this.scaleCount-=1;break;
+            case 1:myscale=1/_this.scale;_this.scaleCount+=1;break;
+            case 0:myscale=_this.scaleCount<0?Math.pow((1/_this.scale),Math.abs(_this.scaleCount)):Math.pow((_this.scale),Math.abs(_this.scaleCount));_this.scaleCount=0;break;
+            default:break;
+        }
+        this.buttonGap /=myscale;
+        this.buttonWidth/=myscale;
+        this.buttonHeight/=myscale;
+        this.buttonMarginTop/=myscale;
+        this.closeButtonWith/=myscale;
+        this.closeButtonMarginRight/=myscale;
+        this.closeButtonMarginTop/=myscale;
+        this.arrowImgWidth/=myscale;
+        this.cicleRadius /= myscale;
+        this.lineGap/=myscale;
+        this.textMarginLeft/=myscale;
+        this.textMarginTop/=myscale;
+        this.textGapHeight/=myscale;
+        this.NameFontSize/=myscale;
+        this.NameFont='bold '+this.NameFontSize+'px sans-serif';
+        this.ValueFontSize/=myscale;
+        this.ValueFont=this.ValueFontSize+'px sans-serif';
+        this.flowNameFontSize/=myscale;
+        this.flowNameFont='bold '+this.flowNameFontSize+'px sans-serif';
+        this.framePadding/=myscale;
+        this.buttonPadding/=myscale;
+        this.shadowBlur/=myscale;
+        this.shadowOffsetX/=myscale;
+        this.shadowOffsetY/=myscale;
+        this.flowNameMarginTop/=myscale;
+        //给所有rect内x,y进行修改
+        this.Canvas_lists.forEach(function(item){
+            item.x/=myscale;
+            item.y/=myscale;
+            item.width/=myscale;
+            item.height/=myscale;
+        });
+        this.drawAll();
+
+    }
 };
 

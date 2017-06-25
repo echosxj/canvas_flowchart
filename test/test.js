@@ -120,6 +120,7 @@ function CanvasFlowChart(id,_config){
                 console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
                 this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
                 console.log('canvas_lists,',this.Canvas_lists);
+                this.initCanvas(_this.Canvas_lists);
                 this.drawAll();
                 //this.initCanvas(this.Canvas_lists.slice(0));
                 //初始化
@@ -1265,12 +1266,18 @@ CanvasFlowChart.prototype={
     },
     fixRetinaCanvas:function(canvas, ctx) {
         if (this.ratio > 1) {
-            canvas.style.height = this.canvasHeight + 'px';
+         /*   canvas.style.height = this.canvasHeight + 'px';
             canvas.style.width = this.canvasWidth + 'px';
             canvas.width *= this.ratio;
+            canvas.height *= this.ratio;*/
+
+           /* canvas.style.height = this.canvasHeight + 'px';
+            canvas.style.width = this.canvasWidth + 'px';*/
+            var _this=this;
+            canvas.width *= this.ratio;
             canvas.height *= this.ratio;
-           /* ctx.scale(this.ratio,this.ratio);*/
-            //ctx.scale(3,3);
+            canvas.style.transform='scale('+1/_this.ratio+')';
+
         }
     },
     PromiseTest:function () {
