@@ -315,7 +315,7 @@ CanvasFlowChart.prototype={
             text:text||[{name:'提示',value:'没有内容'}],
             color : '#e9f1f6',
             isSelected : false,
-            width:((_tmpwidth>100?_tmpwidth:100)+2*_this.textMarginLeft+50)/myscale,
+            width:((_tmpwidth>10?_tmpwidth:10)+2*_this.textMarginLeft+50)/myscale,
             /*height:height||150,*/
             height:_height/myscale,
             mx:0,

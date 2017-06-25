@@ -31,22 +31,22 @@ function CanvasFlowChart(id,_config){
 //图中button属性
     this.buttonName_lists=config.buttonName_lists||['修改信息'];
     this.buttonGap = (config.buttonGap||5);
-    this.buttonWidth=(config.buttonWidth||60);
-    this.buttonHeight=(config.buttonHeight||30);
-    this.buttonMarginTop=(config.buttonMarginTop||40);
+    this.buttonWidth=(config.buttonWidth||54);
+    this.buttonHeight=(config.buttonHeight||25);
+    this.buttonMarginTop=(config.buttonMarginTop||30);
     this.buttonColor=config.buttonColor||'#48c0a3';
-    this.buttonPadding=(config.buttonPadding||4);
+    this.buttonPadding=(config.buttonPadding||3);
 //关闭按钮
     this.canvasCloseImg=new Image();
-    this.canvasCloseImg.src=config.canvasCloseImg||'../public/img/close.png';
+    this.canvasCloseImg.src=config.canvasCloseImg||'data:image/png;base64,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';
     this.closeButtonWith=(config.closeButtonWith||15);
-    this.closeButtonMarginRight=(config.closeButtonMarginRight||20);
-    this.closeButtonMarginTop=(config.closeButtonMarginTop||5);
+    this.closeButtonMarginRight=(config.closeButtonMarginRight||18);
+    this.closeButtonMarginTop=(config.closeButtonMarginTop||4);
 //arrow image
     /*this.arrowImg=new Image();
     this.arrowImg.src=config.arrowImg||'../public/right.png';*/
-    this.arrowImgWidth=(config.arrowImgWidth||15);
-    this.cicleRadius = 8;
+    this.arrowImgWidth=(config.arrowImgWidth||13);
+    this.cicleRadius = 7;
 //区别mouseup和click
     this.moveFlag=false;
     this.clickFlag=false;
@@ -60,12 +60,12 @@ function CanvasFlowChart(id,_config){
     this.tmpPoint={x:null,y:null};
     this.lineGap=10;
 //text
-    this.textMarginLeft=(config.textMarginLeft||20);
-    this.textMarginTop=(config.textMarginTop||50);
-    this.textMarginTopWithoutFlowName=(config.textMarginTopWithoutFlowName||20);
-    this.textGapHeight=(config.textGapHeight||20);
+    this.textMarginLeft=(config.textMarginLeft||16);
+    this.textMarginTop=(config.textMarginTop||42);
+    this.textMarginTopWithoutFlowName=(config.textMarginTopWithoutFlowName||16);
+    this.textGapHeight=(config.textGapHeight||16);
 
-    this.flowNameMarginTop=(config.flowNameMarginTop||30);
+    this.flowNameMarginTop=(config.flowNameMarginTop||25);
     /*canvas_toolbar点击修改全局值*/
     this.canDragRect=true;
     this.canDrawLine=false;
@@ -79,7 +79,7 @@ function CanvasFlowChart(id,_config){
         {x: 10, y: 10, flowName:'初审', text: [{name:'是否会审', value: ['是'],something:'2131231'},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
         {x: 280, y: 10,flowName:'复审', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
         {x: 540, y: 10,flowName:' ', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2']}],isCurrent:true},
-        {x: 260, y: 300,flowName:'111111111111111111111111111111111111111111111', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
+        {x: 260, y: 300,flowName:'11111111111111111111111', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
         {x: 500, y: 300, text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
     ];
     //给定text修改index=i的rect
@@ -151,14 +151,14 @@ function CanvasFlowChart(id,_config){
     //放到rect里面
     //this.isCurrentPath=false;
     this.currentPathColor='#c93756';
-    this.framePadding=5;
+    this.framePadding=4;
 
     //字体
-    this.NameFontSize=18;
+    this.NameFontSize=15;
     this.NameFont='bold '+this.NameFontSize+'px sans-serif';
     this.ValueFontSize=13;
     this.ValueFont=this.ValueFontSize+'px sans-serif';
-    this.flowNameFontSize=20;
+    this.flowNameFontSize=16;
     this.flowNameFont='bold '+this.flowNameFontSize+'px sans-serif';
     this.putCanvasBtnId=config.putCanvasBtnId||null;
 
@@ -304,7 +304,8 @@ CanvasFlowChart.prototype={
         _tmpwidth=_tmpnamewidth>_tmpwidth?_tmpnamewidth:_tmpwidth;
         var _scale=_this.scaleCount;
         var _iscurrent=isCurrent==true?true:false;
-        var _height=text.length?((_num+text.length-1)*20+70+_this.textMarginTop):70+_this.textMarginTop;
+        var _height_add=text.length?(_num+text.length-1):(2);
+        var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop+20;
         //text:[{name:'',value:['']}]
         var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
 
