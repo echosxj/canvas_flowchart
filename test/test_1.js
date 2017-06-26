@@ -211,11 +211,11 @@ CanvasFlowChart.prototype={
                 }
                 if (_this.canLineDraw) {
                     _this.makeTmpLinePoint(e);
-                    /*var moveX = e.clientX - canvas.getBoundingClientRect().left;
-                     var moveY = e.clientY - canvas.getBoundingClientRect().top;*/
+                    /*var moveX = e.pageX - canvas.offsetLeft;
+                     var moveY = e.pageY - canvas.offsetTop;*/
                     canvas.onmouseup = function (e) {
-                        var clickX = e.clientX - canvas.getBoundingClientRect().left;
-                        var clickY = e.clientY - canvas.getBoundingClientRect().top;
+                        var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+                        var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
                         var fixX=clickX*_this.ratio;
                         var fixY=clickY*_this.ratio;
                         var isInLeftRect=false;
@@ -256,8 +256,8 @@ CanvasFlowChart.prototype={
             };
             //button点击事件
             canvas.onmouseup = function (e) {
-                var clickX = e.clientX - canvas.getBoundingClientRect().left;
-                var clickY = e.clientY - canvas.getBoundingClientRect().top;
+                var clickX = e.pageX - canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+                var clickY = e.pageY - canvas.offsetTop+_this.canvas.parentNode.scrollTop;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 if(_this.clickFlag) {
@@ -315,7 +315,7 @@ CanvasFlowChart.prototype={
             text:text||[{name:'提示',value:'没有内容'}],
             color : '#e9f1f6',
             isSelected : false,
-            width:((_tmpwidth>10?_tmpwidth:10)+2*_this.textMarginLeft+50)/myscale,
+            width:((_tmpwidth>100?_tmpwidth:100)+2*_this.textMarginLeft+50)/myscale,
             /*height:height||150,*/
             height:_height/myscale,
             mx:0,
@@ -480,7 +480,6 @@ CanvasFlowChart.prototype={
             context.beginPath();
             //左边圈
             /* if(i>0){
-
              context.save();
              context.beginPath();
              context.moveTo(rect.x, rect.y+rect.height/2);
@@ -505,7 +504,6 @@ CanvasFlowChart.prototype={
              } else {
              context.lineWidth = 1;
              }
-
              context.fill();
              context.stroke();*/
             context.closePath();
@@ -825,8 +823,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
-        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
+        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -872,13 +870,9 @@ CanvasFlowChart.prototype={
                  rect.mx = clickX - rect.x;
                  rect.my = clickY - rect.y;
                  this.previousSelectedRect = rect;
-
                  rect.isSelected = true;
-
                  this.isDragging = true;
-
                  drawAll(x,y);
-
                  return;*/
             }
         }
@@ -912,8 +906,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         // 取得画布上被单击的点
-        var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
-        var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
+        var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+        var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
         var fixX=clickX*_this.ratio;
         var fixY=clickY*_this.ratio;
         //判断是否在矩形内，是=》矩形可拖拽
@@ -1100,8 +1094,8 @@ CanvasFlowChart.prototype={
             // 判断拖拽对象是否存在
             if (this.previousSelectedRect != null) {
                 // 取得鼠标位置
-                var clickX = e.clientX - this.canvas.getBoundingClientRect().left;
-                var clickY = e.clientY - this.canvas.getBoundingClientRect().top;
+                var clickX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+                var clickY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 this.previousSelectedRect.x = fixX - this.previousSelectedRect.mx;
@@ -1117,8 +1111,8 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         if(this.canLineDraw=true){
-            var moveX = e.clientX - this.canvas.getBoundingClientRect().left;
-            var moveY = e.clientY - this.canvas.getBoundingClientRect().top;
+            var moveX = e.pageX - this.canvas.offsetLeft+_this.canvas.parentNode.scrollLeft;
+            var moveY = e.pageY - this.canvas.offsetTop+_this.canvas.parentNode.scrollTop;
 
             var fixX=moveX*_this.ratio;
             var fixY=moveY*_this.ratio;
@@ -1512,4 +1506,3 @@ CanvasFlowChart.prototype={
 
     }
 };
-

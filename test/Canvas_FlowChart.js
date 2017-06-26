@@ -31,11 +31,11 @@ function CanvasFlowChart(id,_config){
 //图中button属性
     this.buttonName_lists=config.buttonName_lists||['修改信息'];
     this.buttonGap = (config.buttonGap||5);
-    this.buttonWidth=(config.buttonWidth||54);
+    this.buttonWidth=(config.buttonWidth||56);
     this.buttonHeight=(config.buttonHeight||25);
     this.buttonMarginTop=(config.buttonMarginTop||30);
     this.buttonColor=config.buttonColor||'#48c0a3';
-    this.buttonPadding=(config.buttonPadding||3);
+    this.buttonPadding=(config.buttonPadding||2);
 //关闭按钮
     this.canvasCloseImg=new Image();
     this.canvasCloseImg.src=config.canvasCloseImg||'data:image/png;base64,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';
@@ -165,6 +165,11 @@ function CanvasFlowChart(id,_config){
     //只能观看
     this.onlyShow=(config.onlyShow==true)?true:false;
 
+
+    //canvas增减宽高的设置
+    this.detalCanvasHeight=200;
+    this.detalCanvasWidth=500;
+
 }
 
 CanvasFlowChart.prototype={
@@ -194,7 +199,7 @@ CanvasFlowChart.prototype={
 
         /*mousedown move up out*/
     //鼠标事件
-
+        _this.clickFlag = true;
         canvas.onmousedown = function(e) {
             _this.moveFlag = true;
             _this.clickFlag = true;
@@ -259,6 +264,7 @@ CanvasFlowChart.prototype={
             canvas.onmouseup = function (e) {
                 var clickX = e.clientX - canvas.getBoundingClientRect().left;
                 var clickY = e.clientY - canvas.getBoundingClientRect().top;
+                console.log('mouseup',_this.clickFlag);
                 var fixX=clickX*_this.ratio;
                 var fixY=clickY*_this.ratio;
                 if(_this.clickFlag) {
@@ -278,6 +284,22 @@ CanvasFlowChart.prototype={
             _this.endRect=null;
             _this.drawAll()
         };
+       /* canvas.onclick = function(e){
+            console.log('click');
+            var clickX = e.clientX - canvas.getBoundingClientRect().left;
+            var clickY = e.clientY - canvas.getBoundingClientRect().top;
+            console.log('mouseup',_this.clickFlag);
+            var fixX=clickX*_this.ratio;
+            var fixY=clickY*_this.ratio;
+            if(_this.clickFlag) {
+                console.log('click true');
+                _this.canvasClickButton(e);
+                if(_this.canDeleteLine){
+                    _this.deleteLine(fixX,fixY);
+                }
+            } else{console.log('clickfalse')}
+            _this.drawAll(fixX,fixY);
+        }*/
     },
     createRectObj: function createRectObj(x, y, flowName, text,isCurrent) {
         var _this=this;
@@ -304,8 +326,9 @@ CanvasFlowChart.prototype={
         _tmpwidth=_tmpnamewidth>_tmpwidth?_tmpnamewidth:_tmpwidth;
         var _scale=_this.scaleCount;
         var _iscurrent=isCurrent==true?true:false;
-        var _height_add=text.length?(_num+text.length-1):(2);
-        var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop+20;
+        var _height=text.length?((_num+text.length-1)*17+50+_this.textMarginTop):50+_this.textMarginTop;
+      /*  var _height_add=text.length?(_num+text.length-1):(2);
+        var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop;*/
         //text:[{name:'',value:['']}]
         var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
 
@@ -398,13 +421,14 @@ CanvasFlowChart.prototype={
         context.save();
         context.beginPath();
         context.fillStyle='#ffffff';
-        context.fillRect(0,0,this.canvasWidth,this.canvasHeight);
+        context.fillRect(0,0,_this.canvas.width,_this.canvas.height);
         context.closePath();
         context.restore();
     },
     drawRects:function drawRects(x,y) {
         var context=this.canvas.getContext('2d');
         var _this=this;
+        var canvas=_this.canvas;
         // 清除画布，准备绘制
         //context.clearRect(0, 0, canvas.width, canvas.height);
         // 遍历所有rect
@@ -1177,55 +1201,10 @@ CanvasFlowChart.prototype={
 
                 whileCount++;
             }
-         /*   while(_tmp_line_lists.length>0){
-                for(var _i=0;_i<_tmp_line_lists.length;_i++){
-                    var lines=_tmp_line_lists[_i];
-                    if(lines[0]==_currentNum){
-                        _tmpSort.push(lines[0]);
-                        _currentNum=lines[1];
-                        _tmp_line_lists.splice(_i,1);
-                        if(_tmp_line_lists.length<1){
-                            _tmpSort.push(_currentNum);
-                            break;
-                        }
-                    }
-                }
-            }*/
            console.log('sort');
             _tmpSort.push(_currentNum);
-           //var _i=0;
-          /* do{
-               var tmp=_tmp_line_lists.filter(function(item){
-                 return item[0]==_currentNum
-               });
-               var getline=tmp[0];
-               if(tmp.length!=0){
-                   console.log('getline');
-                   _tmpSort.push(getline[0]);
-                   _currentNum=getline[1];
-               }else{
-                  // break;
-               }
-               _currentNum=tmp[1];
-               _i++;
-           }while(_i<_tmp_line_lists.length);*/
-         /*  for(var _i=0;_i<_tmp_line_lists.length;_i++){
-              /!* var tmp=_tmp_line_lists.filter(function(item){
-                   return item[0]==_currentNum
-               });
-               var getline=tmp[0];
-               if(tmp.length!=0){
-                   console.log('getline');
-                   _tmpSort.push(getline[0]);
-                   _currentNum=getline[1];
-               }else{
-                   // break;
-               }
-               _currentNum=tmp[1];*!/
-              console.log(1)
-            }*/
         }
-        console.log(_tmpSort)
+        console.log(_tmpSort);
         this.canvasListSort=_tmpSort;
     },
     outputData:function (){
@@ -1304,7 +1283,7 @@ CanvasFlowChart.prototype={
     },
     //创建按钮区域
     createButtonArea: function(){
-        var btnString='<div id="canvas_toolbar"> <button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选择流程或连线" ><div></div></button> <button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button> <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button> <button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button><button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> <button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button> <button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button> <button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button><button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button><button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button> <button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button><button id="canvas_btn_saveImg" class="canvas_btn" title="保存图片"><div></div></button> <button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button><button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button> </button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button><button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> </button> </div>';
+        var btnString='<div id="canvas_toolbar"><button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button><button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button> <button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> <button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button>  <button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button> <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button> <button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选择流程或连线" ><div></div></button> <button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button><button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button><button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button> <button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button><button id="canvas_btn_saveImg" class="canvas_btn" title="保存图片"><div></div></button> <button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button><button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button> </button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button><button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> </button> </div>';
         if(this.putCanvasBtnId==null){
             $(btnString).insertAfter($(this.canvas));
         }else{
@@ -1383,7 +1362,7 @@ CanvasFlowChart.prototype={
         var canvas=this.canvas;
         var context=this.canvas.getContext('2d');
         var _this=this;
-        _this.canvasWidth=_this.canvasWidth+500;
+        _this.canvasWidth=_this.canvasWidth+_this.detalCanvasWidth;
         this.canvas.width=this.canvasWidth;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
@@ -1393,7 +1372,7 @@ CanvasFlowChart.prototype={
         var canvas=this.canvas;
         var context=this.canvas.getContext('2d');
         var _this=this;
-        _this.canvasWidth=_this.canvasWidth<=800?800:_this.canvasWidth-500;
+        _this.canvasWidth=_this.canvasWidth<=800?800:_this.canvasWidth-_this.detalCanvasWidth;
         this.canvas.width=this.canvasWidth;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
@@ -1405,7 +1384,7 @@ CanvasFlowChart.prototype={
         var canvas=this.canvas;
         var context=this.canvas.getContext('2d');
         var _this=this;
-        _this.canvasHeight=_this.canvasHeight+200;
+        _this.canvasHeight=_this.canvasHeight+_this.detalCanvasHeight;
         this.canvas.width=this.canvasWidth;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
@@ -1417,14 +1396,14 @@ CanvasFlowChart.prototype={
         var context=this.canvas.getContext('2d');
         var _this=this;
         this.canvas.width=this.canvasWidth;
-        _this.canvasHeight=_this.canvasHeight==500?500:_this.canvasHeight-200;
+        _this.canvasHeight=_this.canvasHeight==500?500:_this.canvasHeight-_this.detalCanvasHeight;
         this.canvas.height=this.canvasHeight;
         this.fixRetinaCanvas(canvas,context);
         this.drawAll()
     },
 
     //自动排序成图
-    autoSort:function () {
+    /*autoSort:function () {
         var _this=this;
         var _heightLists=[0,0,0];
         this.getcanvasListSort();
@@ -1446,14 +1425,14 @@ CanvasFlowChart.prototype={
             item.y=_heightLists[_x]+(_y)*50+20;
             _heightLists[_x]+=item.height;
         });
-        /*_this.Canvas_lists.forEach(function (item,index) {
+        /!*_this.Canvas_lists.forEach(function (item,index) {
             var _x=(index)%3;
             item.x=_x*(item.width)+50*(_x+1);
             var _y=Math.floor((index)/3);
             /!*item.y=(_y*(item.height)+50*(_y+1);*!/
             item.y=_heightLists[_x]+(_y)*50+20;
             _heightLists[_x]+=item.height;
-        });*/
+        });*!/
         var indexLists=_tmpIndexList.filter(function (item) {
             return _this.canvasListSort.indexOf(item)==-1
         });
@@ -1471,8 +1450,68 @@ CanvasFlowChart.prototype={
         }
 
         _this.drawAll();
-    },
+    },*/
 
+    autoSort:function () {
+        this.getcanvasListSort();
+        var _this=this;
+        var list1=this.canvasListSort.slice(0);
+        var list2=[];
+        var _canvaslist=this.Canvas_lists.slice(0);
+        _canvaslist.forEach(function (item,index) {
+            if(list1.indexOf(index)==-1){
+                list2.push(index)
+            }
+        });
+        var list_last=list1.concat(list2);
+        console.log(list_last);
+
+        var canvasX=this.canvas.width;
+        var canvasY=this.canvas.height;
+
+        var _x=0;
+        var _y=0;
+        var _max_y=0;
+        var _gap=30;
+
+        list_last.forEach(function (rectIndex,index) {
+            var item=_canvaslist[rectIndex];
+            var _tmpX=_x+_gap+item.width;
+            if(_tmpX>canvasX){
+                _x=0;
+                _y=_y+_gap+_max_y;
+                _max_y=0;
+                item.x=_x+_gap;
+                _x=_x+_gap+item.width;
+                if(item.height>_max_y){
+                    _max_y=item.height;
+                }
+                item.y=_y+_gap;
+            }else{
+                item.x=_x+_gap;
+                _x=_x+_gap+item.width;
+                if(item.height>_max_y){
+                    _max_y=item.height;
+                }
+                item.y=_y+_gap
+            }
+            var _tmpY=_y+_gap+item.height;
+            console.log(_tmpY-canvasY);
+
+
+        });
+        while(_y+_max_y>canvasY-_this.detalCanvasHeight){
+            console.log('add')
+            _this.addCanvasHeight();
+            canvasY+=_this.detalCanvasHeight;
+        }
+        while(_y+_max_y<(canvasY-_this.detalCanvasHeight)){
+            console.log('reduce');
+            _this.reduceCanvasHeight();
+            canvasY-=_this.detalCanvasHeight;
+        }
+        this.drawAll();
+    },
     //调整scale缩放
     changeScale:function (option) {
         //option为操作   -1 是缩小  0是恢复 是放大
