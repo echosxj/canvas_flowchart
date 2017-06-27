@@ -12,7 +12,7 @@ canvas {
     display: none;
     z-index:9999;
 }
-#canvas_area{
+.canvas_area{
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -50,7 +50,7 @@ canvas {
     position: absolute;
     z-index: 1;
 }
-#canvas_toolbar{
+.canvas_toolbar{
     width: 800px;
     border: 1px solid black;
     position: relative;
@@ -77,84 +77,84 @@ canvas {
 
 }
 
-#canvas_btn_toggleDragRect div{
+.canvas_btn_toggleDragRect div{
     background: url("../public/img/choose.png") center center;background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
  /*   background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_toggleDrawLine div{
+.canvas_btn_toggleDrawLine div{
     background: url("../public/img/addline.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
    /* background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_toggleDeleteLine div{
+.canvas_btn_toggleDeleteLine div{
     background: url("../public/img/delete.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
  /*   background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_addRect div{
+.canvas_btn_addRect div{
     background: url("../public/img/new.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
    /* background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_clearAll div{
+.canvas_btn_clearAll div{
     background: url("../public/img/clear.png") center center;background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
 /*    background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_test div{
+.canvas_btn_test div{
     background: url("../public/img/test.png") center center;
     background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
    /* background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_outputData div{
+.canvas_btn_outputData div{
     background: url("../public/img/output.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
    /* background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_saveImg div{
+.canvas_btn_saveImg div{
     background: url("../public/img/download.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
   /*  background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_addHeight div{
+.canvas_btn_addHeight div{
     background: url("../public/img/addheight.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
  /*   background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_reduceHeight div{
+.canvas_btn_reduceHeight div{
     background: url("../public/img/reduceheight.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
  /*   background-size:cover; width: 100%;
     height: 100%;*/
 }
 
-#canvas_btn_autoSort div{
+.canvas_btn_autoSort div{
     background: url("../public/img/sort.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
 /*    background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_addWidth div{
+.canvas_btn_addWidth div{
     background: url("../public/img/addwidth.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
  /*   background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_reduceWidth div{
+.canvas_btn_reduceWidth div{
     background: url("../public/img/reducewidth.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
 /*    background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_enlarge div{
+.canvas_btn_enlarge div{
     background: url("../public/img/enlarge.png") center center; background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
   /*  background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_shrink div{
+.canvas_btn_shrink div{
     background: url("../public/img/shrink.png") center center;  background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
     /*background-size:cover; width: 100%;
     height: 100%;*/
 }
-#canvas_btn_recovery div{
+.canvas_btn_recovery div{
     background: url("../public/img/recovery.png") center center;   background-size: cover;-moz-background-size: cover;-o-background-size: cover;-webkit-background-size: cover;
     /*background-size:cover; width: 100%;
     height: 100%;*/

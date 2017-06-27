@@ -3,6 +3,8 @@
  */
 function CanvasFlowChart(id,_config){
     var config=(_config instanceof Object)?_config:{};
+    //判断浏览器
+    this.browser=null;
     //ratio调整高清屏下canvas模糊问题
     this.ratio=1;
     //缩放
@@ -78,7 +80,7 @@ function CanvasFlowChart(id,_config){
     this.testList=[
         {x: 50, y: 10, flowName:'初审',
             text: [
-                {name:'是否会审', value: [{data:'是',something:'2131231'}],st:''},
+                {name:'是否会审', value: [{data:'是',something:'2131231',type:'USign'}],st:''},
                 {
                     name:'审批人',
                     value: [
@@ -91,7 +93,7 @@ function CanvasFlowChart(id,_config){
         },
         {x: 300, y: 10,flowName:'复审',
             text: [
-                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'是否会审', value: [{data:'否',something:'2131231',type:'USign'}],st:''},
                 {name:'审批人',
                     value: [],st:'',isCurrent:false
                 }
@@ -99,7 +101,7 @@ function CanvasFlowChart(id,_config){
         },
         {x: 500, y: 10,flowName:'复审',
             text: [
-                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'是否会审', value: [{data:'否',something:'2131231',type:'USign'}],st:''},
                 {name:'审批人',
                     value: [
                         {data:'wang',something:'2131231',operatorId:'1das',operatorName:'wang'},
@@ -114,7 +116,7 @@ function CanvasFlowChart(id,_config){
         },
         {x: 50, y: 200,flowName:'复审',
             text: [
-                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'是否会审', value: [{data:'否',something:'2131231',type:'USign'}],st:''},
                 {name:'审批人',
                     value: [
                         {data:'wang',something:'2131231',operatorId:'31',operatorName:'wang'},
@@ -125,6 +127,7 @@ function CanvasFlowChart(id,_config){
             ]
         },
     ];
+
     //给定text修改index=i的rect
     this.changeRectInfo=function (newText) {
         var text=newText||this.willReplaceRectText;
@@ -198,7 +201,8 @@ CanvasFlowChart.prototype={
             _this.addCanvasBtnChoosed(e);
         });
 
-        //创建img
+        //获取浏览器类型
+        _this.browser=_this.getBrowser();
 
 
         //获取canvas
@@ -433,6 +437,7 @@ CanvasFlowChart.prototype={
         this.drawAll();
     },
     clearCanvas:function () {
+
         this.Canvas_lists = [];
         this.line_lists = [];
         this.startRect_lists=[];
@@ -1244,10 +1249,22 @@ CanvasFlowChart.prototype={
 
             /* canvas.style.height = this.canvasHeight + 'px';
              canvas.style.width = this.canvasWidth + 'px';*/
-            var _this=this;
-            canvas.width *= this.ratio;
-            canvas.height *= this.ratio;
-            canvas.style.transform='scale('+1/_this.ratio+')';
+
+            if(this.browser=='IE'){
+                /*IE*/
+                canvas.width *= this.ratio;
+                canvas.height *= this.ratio;
+                canvas.style.width = canvas.width/this.ratio + 'px';
+                canvas.style.height = canvas.height/this.ratio + 'px';
+            }
+            else{
+                /*Chrome FireFox*/
+                 var _this=this;
+                 canvas.width *= this.ratio;
+                 canvas.height *= this.ratio;
+                 canvas.style.transform='scale('+1/_this.ratio+')';
+            }
+
 
         }
     },
@@ -1274,7 +1291,24 @@ CanvasFlowChart.prototype={
     },
     //创建按钮区域
     createButtonArea: function(){
-        var btnString='<div id="canvas_toolbar"><button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button><button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button> <button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> <button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button>  <button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button> <button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button> <button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选择流程或连线" ><div></div></button> <button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button><button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button><button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button> <button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button><button id="canvas_btn_saveImg" class="canvas_btn" title="保存图片"><div></div></button> <button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button><button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button> </button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button><button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> </button> </div>';
+        var btnString=
+            '<div id="canvas_toolbar">'+
+            '<button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button>'+
+            '<button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> '+
+            '<button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button>'+
+            '<button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button>'+
+            '<button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选中" ><div></div></button>'+
+           // '<button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button>'+
+            '<button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button>'+
+            '<button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button>'+
+            '<button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button>'+
+            '<button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button>'+
+            '<button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button>'+
+            '</button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button>'+
+            '<button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> '+
+            '<button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button>'+
+            '<button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button>' +
+            '</div>';
         if(this.putCanvasBtnId==null){
             $(btnString).insertAfter($(this.canvas));
         }else{
@@ -1491,12 +1525,12 @@ CanvasFlowChart.prototype={
 
 
         });
-        while(_y+_max_y>canvasY-_this.detalCanvasHeight){
+        while(_y+_max_y+50>canvasY-_this.detalCanvasHeight){
             console.log('add')
             _this.addCanvasHeight();
             canvasY+=_this.detalCanvasHeight;
         }
-        while(_y+_max_y<(canvasY-_this.detalCanvasHeight)){
+        while(_y+_max_y+50<(canvasY-_this.detalCanvasHeight)){
             console.log('reduce');
             _this.reduceCanvasHeight();
             canvasY-=_this.detalCanvasHeight;
@@ -1558,6 +1592,25 @@ CanvasFlowChart.prototype={
         });
         this.drawAll();
 
+    },
+    getBrowser:function(){
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1;
+        if (isOpera) {
+            return "Opera"
+        }; //判断是否Opera浏览器
+        if (userAgent.indexOf("Firefox") > -1) {
+            return "FF";
+        } //判断是否Firefox浏览器
+        if (userAgent.indexOf("Chrome") > -1){
+            return "Chrome";
+        }
+        if (userAgent.indexOf("Safari") > -1) {
+            return "Safari";
+        } //判断是否Safari浏览器
+        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+            return "IE";
+        }; //判断是否IE浏览器
     }
 };
 
