@@ -44,7 +44,7 @@ function CanvasFlowChart(id,_config){
     this.closeButtonMarginTop=(config.closeButtonMarginTop||4);
 //arrow image
     /*this.arrowImg=new Image();
-    this.arrowImg.src=config.arrowImg||'../public/right.png';*/
+     this.arrowImg.src=config.arrowImg||'../public/right.png';*/
     this.arrowImgWidth=(config.arrowImgWidth||13);
     this.cicleRadius = 7;
 //区别mouseup和click
@@ -76,52 +76,50 @@ function CanvasFlowChart(id,_config){
 
 
     this.testList=[
-        {x: 10, y: 10, flowName:'初审',
+        {x: 50, y: 10, flowName:'初审',
             text: [
                 {name:'是否会审', value: [{data:'是',something:'2131231'}],st:''},
                 {
                     name:'审批人',
                     value: [
-                        {data:'wang',something:'2131231',userId:'1'},
-                        {data:'wang',something:'2131231',userId:'121'}
+                        {data:'wang',something:'2131231',operatorId:'1',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'121',operatorName:'wang'}
                     ],
                     st:'',isCurrent:false
                 }
-                ]
+            ]
         },
-        {x: 280, y: 10,flowName:'复审',
+        {x: 300, y: 10,flowName:'复审',
             text: [
                 {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
                 {name:'审批人',
-                    value: [
-                        {data:'wang',something:'2131231',userId:'1dsadasda'},
-                    ],st:'',isCurrent:false
+                    value: [],st:'',isCurrent:false
                 }
-                ]
+            ]
         },
-        {x: 280, y: 10,flowName:'复审',
+        {x: 500, y: 10,flowName:'复审',
             text: [
                 {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
                 {name:'审批人',
                     value: [
-                        {data:'wang',something:'2131231',userId:'1das'},
-                        {data:'wang',something:'2131231',userId:'1x'},
-                        {data:'wang',something:'2131231',userId:'1dsaaa'},
-                        {data:'wang',something:'2131231',userId:'21'},
-                        {data:'wang',something:'2131231',userId:'132'},
-                        {data:'wang',something:'2131231',userId:'144'},
+                        {data:'wang',something:'2131231',operatorId:'1das',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'1x',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'1dsaaa',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'21',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'132',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'144',operatorName:'wang'},
                     ],st:'',isCurrent:false
                 }
             ]
         },
-        {x: 280, y: 10,flowName:'复审',
+        {x: 50, y: 200,flowName:'复审',
             text: [
                 {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
                 {name:'审批人',
                     value: [
-                        {data:'wang',something:'2131231',userId:'31'},
-                        {data:'wang',something:'2131231',userId:'32'},
-                        {data:'wang',something:'2131231',userId:'33'},
+                        {data:'wang',something:'2131231',operatorId:'31',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'32',operatorName:'wang'},
+                        {data:'wang',something:'2131231',operatorId:'33',operatorName:'wang'},
                     ],st:'',isCurrent:false
                 }
             ]
@@ -134,21 +132,21 @@ function CanvasFlowChart(id,_config){
         var _this=this;
 
 
-            if((text instanceof Array)&&text.length){
-                console.log('changeText:',text);
-                console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
-                this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
-                console.log('canvas_lists,',this.Canvas_lists);
-                this.initCanvas(_this.Canvas_lists);
-                this.drawAll();
-                //this.initCanvas(this.Canvas_lists.slice(0));
-                //初始化
-                /*this.canvasInfoChangeIndex=null;
-                 this.onchangedRectText=[{}];
-                 this.willReplaceRectText=[{}];*/
-            }else{
-                alert('修改数据错误，信息应该为数组')
-            }
+        if((text instanceof Array)&&text.length){
+            console.log('changeText:',text);
+            console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
+            this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
+            console.log('canvas_lists,',this.Canvas_lists);
+            this.initCanvas(_this.Canvas_lists);
+            this.drawAll();
+            //this.initCanvas(this.Canvas_lists.slice(0));
+            //初始化
+            /*this.canvasInfoChangeIndex=null;
+             this.onchangedRectText=[{}];
+             this.willReplaceRectText=[{}];*/
+        }else{
+            alert('修改数据错误，信息应该为数组')
+        }
 
         _this.drawAll();
 
@@ -204,7 +202,7 @@ CanvasFlowChart.prototype={
 
         //创建img
 
-        
+
         //获取canvas
 
         var canvas=this.canvas;
@@ -214,7 +212,7 @@ CanvasFlowChart.prototype={
         this.fixRetinaCanvas(canvas,context);
 
         /*mousedown move up out*/
-    //鼠标事件
+        //鼠标事件
         _this.clickFlag = true;
         canvas.onmousedown = function(e) {
             _this.moveFlag = true;
@@ -300,22 +298,22 @@ CanvasFlowChart.prototype={
             _this.endRect=null;
             _this.drawAll()
         };
-       /* canvas.onclick = function(e){
-            console.log('click');
-            var clickX = e.clientX - canvas.getBoundingClientRect().left;
-            var clickY = e.clientY - canvas.getBoundingClientRect().top;
-            console.log('mouseup',_this.clickFlag);
-            var fixX=clickX*_this.ratio;
-            var fixY=clickY*_this.ratio;
-            if(_this.clickFlag) {
-                console.log('click true');
-                _this.canvasClickButton(e);
-                if(_this.canDeleteLine){
-                    _this.deleteLine(fixX,fixY);
-                }
-            } else{console.log('clickfalse')}
-            _this.drawAll(fixX,fixY);
-        }*/
+        /* canvas.onclick = function(e){
+         console.log('click');
+         var clickX = e.clientX - canvas.getBoundingClientRect().left;
+         var clickY = e.clientY - canvas.getBoundingClientRect().top;
+         console.log('mouseup',_this.clickFlag);
+         var fixX=clickX*_this.ratio;
+         var fixY=clickY*_this.ratio;
+         if(_this.clickFlag) {
+         console.log('click true');
+         _this.canvasClickButton(e);
+         if(_this.canDeleteLine){
+         _this.deleteLine(fixX,fixY);
+         }
+         } else{console.log('clickfalse')}
+         _this.drawAll(fixX,fixY);
+         }*/
     },
     createRectObj: function createRectObj(x, y, flowName, text,isCurrent) {
         //text:{name:'',value:[{data:'',something:''},{data:'',something:''}]}
@@ -341,9 +339,9 @@ CanvasFlowChart.prototype={
         _tmpwidth=_tmpnamewidth>_tmpwidth?_tmpnamewidth:_tmpwidth;
         var _scale=_this.scaleCount;
         var _iscurrent=isCurrent==true?true:false;
-        var _height=text.length?((_num+text.length-1)*17+50+_this.textMarginTop):50+_this.textMarginTop;
-      /*  var _height_add=text.length?(_num+text.length-1):(2);
-        var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop;*/
+        var _height=text.length?((_num+text.length-1)*16+70+_this.textMarginTop):70+_this.textMarginTop;
+        /*  var _height_add=text.length?(_num+text.length-1):(2);
+         var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop;*/
         //text:[{name:'',value:['']}]
         var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
         return{
@@ -403,7 +401,7 @@ CanvasFlowChart.prototype={
         // 一个随机大小和位置
         var x = 300;
         var y = 200;
-        var rect = this.createRectObj(x, y,'新增流程' ,[{name:'是否会审',value:[{data:''}]},{name:'审批人',value:[{data:''}]}]);
+        var rect = this.createRectObj(x, y,'新增流程' ,[{name:'是否会审',value:[{data:'否',signType:'SSign'}]},{name:'审批人',value:[]}]);
         // 把它保存在数组中
         this.Canvas_lists.push(rect);
         this.toggleDragRect();
@@ -453,10 +451,10 @@ CanvasFlowChart.prototype={
             context.arcTo(rect.x-_this.framePadding,rect.y+rect.height+_this.framePadding,rect.x-_this.framePadding,rect.y+rect.height,_this.framePadding);
             context.lineTo(rect.x-_this.framePadding,rect.y);
             /*if(rect.isCurrent){
-                context.fillStyle=_this.currentPathColor;
-            }else{
-                context.fillStyle='#ffffff'
-            }*/
+             context.fillStyle=_this.currentPathColor;
+             }else{
+             context.fillStyle='#ffffff'
+             }*/
             if(i==0){
                 context.fillStyle=_this.firstRectColor;
             }
@@ -481,8 +479,8 @@ CanvasFlowChart.prototype={
                 console.log('inRectPath');
                 context.shadowBlur=_this.shadowBlur;
                 context.shadowColor=_this.shadowColor;
-               /* context.shadowOffsetX=_this.shadowOffsetX;
-                context.shadowOffsetY=_this.shadowOffsetY*/
+                /* context.shadowOffsetX=_this.shadowOffsetX;
+                 context.shadowOffsetY=_this.shadowOffsetY*/
             }else{
                 if (_this.previousSelectedRect != null) {_this.previousSelectedRect.isSelected = false;}
             }
@@ -490,17 +488,17 @@ CanvasFlowChart.prototype={
                 context.shadowBlur=_this.shadowBlur;
                 context.shadowColor=_this.shadowColor;
                 /*context.shadowOffsetX=_this.shadowOffsetX;
-                context.shadowOffsetY=_this.shadowOffsetY*/
+                 context.shadowOffsetY=_this.shadowOffsetY*/
             }
             /*if(i==0){
-                context.fillStyle = _this.firstRectColor;
-            }else{
-                context.fillStyle = rect.color;
-            }*/
+             context.fillStyle = _this.firstRectColor;
+             }else{
+             context.fillStyle = rect.color;
+             }*/
             context.fillStyle = _this.rectInsideColor;
-         /*   if(rect.isCurrent){
-                context.fillStyle = _this.currentPathColor;
-            }*/
+            /*   if(rect.isCurrent){
+             context.fillStyle = _this.currentPathColor;
+             }*/
             context.strokeStyle = "black";
             context.fill();
             context.stroke();
@@ -589,6 +587,13 @@ CanvasFlowChart.prototype={
                         var _tmpvalueWidth=context.measureText(String(textObj.value[valueIndex]));
                         if(_tmpvalueWidth>valueWidth){valueWidth=_tmpvalueWidth}
                         context.fillText(String(textObj.value[valueIndex].data),_this.textMarginLeft+Number(nameWidth),_textMarginTop+_this.textGapHeight*(allValueNum));
+                        context.restore();
+                    }
+                    if(textObj.value.length==0&&textObj.name!=null){
+                        allValueNum++;
+                        context.save();
+                        context.font=_this.NameFont;
+                        context.fillText(_name,_this.textMarginLeft,_textMarginTop+_this.textGapHeight*(allValueNum));
                         context.restore();
                     }
 
@@ -736,13 +741,13 @@ CanvasFlowChart.prototype={
 
             context.lineWidth=10;//这个是选择的宽度
             context.fillStyle='black';
-           /* var _x=Number(x),_y=Number(y);
-            console.log(context.isPointInPath(x,y));
-            if(x&&y&&(context.isPointInStroke(_x,_y))){
-                context.shadowBlur=10;
-                context.shadowColor="blue";
-                //context.fill();
-            }*/
+            /* var _x=Number(x),_y=Number(y);
+             console.log(context.isPointInPath(x,y));
+             if(x&&y&&(context.isPointInStroke(_x,_y))){
+             context.shadowBlur=10;
+             context.shadowColor="blue";
+             //context.fill();
+             }*/
             if(choosed){
                 context.shadowBlur=_this.shadowBlur/2;
                 context.shadowColor="blue";
@@ -826,15 +831,15 @@ CanvasFlowChart.prototype={
                 context.restore();
             }
             /*if(x&&y&&context.isPointInStroke(x,y)){
-                var _startNum=_this.startRect_lists.indexOf(line[0]);
-                var _endNum=_this.endRect_lists.indexOf(line[1]);
-                _this.startRect_lists.splice(_startNum,1);
-                _this.endRect_lists.splice(_endNum,1);
-                _this.line_lists.splice(i,1);
-                context.closePath();
-                context.restore();
-                return
-            }*/
+             var _startNum=_this.startRect_lists.indexOf(line[0]);
+             var _endNum=_this.endRect_lists.indexOf(line[1]);
+             _this.startRect_lists.splice(_startNum,1);
+             _this.endRect_lists.splice(_endNum,1);
+             _this.line_lists.splice(i,1);
+             context.closePath();
+             context.restore();
+             return
+             }*/
             context.closePath();
             context.restore();
         }
@@ -925,9 +930,9 @@ CanvasFlowChart.prototype={
                         /*console.log(this.buttonName_lists[index]);
                          console.log(this.Canvas_lists[i].text);*/
                         switch (index){
-                           /* case 0: button1Click(i);return;break;
-                            case 1: button2Click(i);return;break;
-                            case 2: button3Click(i);return;break;*/
+                            /* case 0: button1Click(i);return;break;
+                             case 1: button2Click(i);return;break;
+                             case 2: button3Click(i);return;break;*/
                             /*case 0: button1Click(i);return;break;
                              case 1: button2Click(i);return;break;
                              case 2: button3Click(i);return;break;*/
@@ -951,39 +956,39 @@ CanvasFlowChart.prototype={
     },
 //buttonclick处理
     /*button1Click:function (i){
-        //删除i的左连接
-        for(var index=0;index<this.line_lists.length;index++){
-            var lines=this.line_lists[index];
-            if(lines[1]==i){
-                console.log('delete left line of Canvas_list-'+i);
-                //删除this.line_lists
-                this.line_lists.splice(index,1);
-                //删除start和this.endRect_lists
-                this.startRect_lists.splice(this.startRect_lists.indexOf(lines[0]),1);
-                this.endRect_lists.splice(this.endRect_lists.indexOf(lines[1]),1);
-                drawAll();
-                return;
-            }
-        }
-    },
-    button2Click:function (i) {
-        var context=this.canvas.getContext('2d');
-        var _this=this;
-        //删除i的右连接
-        for(var index=0;index<this.line_lists.length;index++){
-            var lines=this.line_lists[index];
-            if(lines[0]==i){
-                console.log('delete right line of Canvas_list-'+i);
-                //删除this.line_lists
-                this.line_lists.splice(index,1);
-                //删除start和this.endRect_lists
-                this.startRect_lists.splice(this.startRect_lists.indexOf(lines[0]),1);
-                this.endRect_lists.splice(this.endRect_lists.indexOf(lines[1]),1);
-                drawAll();
-                return;
-            }
-        }
-    },*/
+     //删除i的左连接
+     for(var index=0;index<this.line_lists.length;index++){
+     var lines=this.line_lists[index];
+     if(lines[1]==i){
+     console.log('delete left line of Canvas_list-'+i);
+     //删除this.line_lists
+     this.line_lists.splice(index,1);
+     //删除start和this.endRect_lists
+     this.startRect_lists.splice(this.startRect_lists.indexOf(lines[0]),1);
+     this.endRect_lists.splice(this.endRect_lists.indexOf(lines[1]),1);
+     drawAll();
+     return;
+     }
+     }
+     },
+     button2Click:function (i) {
+     var context=this.canvas.getContext('2d');
+     var _this=this;
+     //删除i的右连接
+     for(var index=0;index<this.line_lists.length;index++){
+     var lines=this.line_lists[index];
+     if(lines[0]==i){
+     console.log('delete right line of Canvas_list-'+i);
+     //删除this.line_lists
+     this.line_lists.splice(index,1);
+     //删除start和this.endRect_lists
+     this.startRect_lists.splice(this.startRect_lists.indexOf(lines[0]),1);
+     this.endRect_lists.splice(this.endRect_lists.indexOf(lines[1]),1);
+     drawAll();
+     return;
+     }
+     }
+     },*/
     button3Click:function (i) {
         console.log('button3click:'+i);
         this.canvasInfoChangeIndex=i;
@@ -992,9 +997,9 @@ CanvasFlowChart.prototype={
         //var newData=this.changeRectInfo();//拿到后续处理的数据
         //console.log('newData',newData);
         /*this.Canvas_lists[i].text=newData;
-        console.log('canvas_lists,',this.Canvas_lists);
-        this.drawAll();
-        this.initCanvas(this.Canvas_lists.slice(0));*/
+         console.log('canvas_lists,',this.Canvas_lists);
+         this.drawAll();
+         this.initCanvas(this.Canvas_lists.slice(0));*/
 
         //this.PromiseTest();
     },
@@ -1152,18 +1157,18 @@ CanvasFlowChart.prototype={
                         _tmpSort.push(lines[0]);
                         _currentNum=lines[1];
                         _tmp_line_lists.splice(_i,1);
-                         if(_tmp_line_lists.length<1){
-                         //_tmpSort.push(_currentNum);
-                         //break;
-                         }
-                         console.log('11111')
+                        if(_tmp_line_lists.length<1){
+                            //_tmpSort.push(_currentNum);
+                            //break;
+                        }
+                        console.log('11111')
                     }
                     console.log('222')
                 }
 
                 whileCount++;
             }
-           console.log('sort');
+            console.log('sort');
             _tmpSort.push(_currentNum);
         }
         console.log(_tmpSort);
@@ -1171,7 +1176,7 @@ CanvasFlowChart.prototype={
     },
     outputData:function (){
         var _this=this;
-       this.getcanvasListSort();
+        this.getcanvasListSort();
         var _tmpSort=this.canvasListSort.slice(0);
 
         console.log(_tmpSort);
@@ -1208,13 +1213,13 @@ CanvasFlowChart.prototype={
     },
     fixRetinaCanvas:function(canvas, ctx) {
         if (this.ratio > 1) {
-         /*   canvas.style.height = this.canvasHeight + 'px';
-            canvas.style.width = this.canvasWidth + 'px';
-            canvas.width *= this.ratio;
-            canvas.height *= this.ratio;*/
+            /*   canvas.style.height = this.canvasHeight + 'px';
+             canvas.style.width = this.canvasWidth + 'px';
+             canvas.width *= this.ratio;
+             canvas.height *= this.ratio;*/
 
-           /* canvas.style.height = this.canvasHeight + 'px';
-            canvas.style.width = this.canvasWidth + 'px';*/
+            /* canvas.style.height = this.canvasHeight + 'px';
+             canvas.style.width = this.canvasWidth + 'px';*/
             var _this=this;
             canvas.width *= this.ratio;
             canvas.height *= this.ratio;
@@ -1236,12 +1241,12 @@ CanvasFlowChart.prototype={
                 return newData
             })
         },function (err) {
-                console.log(err)
-            })
-            .then(function (data) {
-            _this.Canvas_lists[_this.canvasInfoChangeIndex].text=data;
-            _this.drawAll();
+            console.log(err)
         })
+            .then(function (data) {
+                _this.Canvas_lists[_this.canvasInfoChangeIndex].text=data;
+                _this.drawAll();
+            })
     },
     //创建按钮区域
     createButtonArea: function(){
@@ -1317,7 +1322,7 @@ CanvasFlowChart.prototype={
         image.src = imgData;
         download.href= imgData;
         download.click();
-},
+    },
 
     //宽度可以自己调节
     addCanvasWidth:function () {
@@ -1366,53 +1371,53 @@ CanvasFlowChart.prototype={
 
     //自动排序成图
     /*autoSort:function () {
-        var _this=this;
-        var _heightLists=[0,0,0];
-        this.getcanvasListSort();
+     var _this=this;
+     var _heightLists=[0,0,0];
+     this.getcanvasListSort();
 
-        var _tmpIndexList=[];
-        var _length=this.Canvas_lists.length;
-        for(var _i=0;_i<_length;_i++){
-            _tmpIndexList.push(_i);
-        }
+     var _tmpIndexList=[];
+     var _length=this.Canvas_lists.length;
+     for(var _i=0;_i<_length;_i++){
+     _tmpIndexList.push(_i);
+     }
 
-        console.log(_tmpIndexList);
-        console.log(_this.canvasListSort);
+     console.log(_tmpIndexList);
+     console.log(_this.canvasListSort);
 
-        _this.canvasListSort.map(function (rectIndex,index) {
-            var item=_this.Canvas_lists[rectIndex];
-            var _x=(index)%3;
-            item.x=_x*(item.width)+50*(_x+1);
-            var _y=Math.floor((index)/3);
-            item.y=_heightLists[_x]+(_y)*50+20;
-            _heightLists[_x]+=item.height;
-        });
-        /!*_this.Canvas_lists.forEach(function (item,index) {
-            var _x=(index)%3;
-            item.x=_x*(item.width)+50*(_x+1);
-            var _y=Math.floor((index)/3);
-            /!*item.y=(_y*(item.height)+50*(_y+1);*!/
-            item.y=_heightLists[_x]+(_y)*50+20;
-            _heightLists[_x]+=item.height;
-        });*!/
-        var indexLists=_tmpIndexList.filter(function (item) {
-            return _this.canvasListSort.indexOf(item)==-1
-        });
-        var sortlength=_this.canvasListSort.length;
-        if(indexLists.length>0){
-            console.log(indexLists);
-            indexLists.forEach(function(item_index,index){
-                var item=_this.Canvas_lists[item_index];
-                var _x=(index+sortlength)%3;
-                item.x=_x*(item.width)+50*(_x+1);
-                var _y=Math.floor((index+sortlength)/3);
-                item.y=_heightLists[_x]+(_y)*50+20;
-                _heightLists[_x]+=item.height;
-            })
-        }
+     _this.canvasListSort.map(function (rectIndex,index) {
+     var item=_this.Canvas_lists[rectIndex];
+     var _x=(index)%3;
+     item.x=_x*(item.width)+50*(_x+1);
+     var _y=Math.floor((index)/3);
+     item.y=_heightLists[_x]+(_y)*50+20;
+     _heightLists[_x]+=item.height;
+     });
+     /!*_this.Canvas_lists.forEach(function (item,index) {
+     var _x=(index)%3;
+     item.x=_x*(item.width)+50*(_x+1);
+     var _y=Math.floor((index)/3);
+     /!*item.y=(_y*(item.height)+50*(_y+1);*!/
+     item.y=_heightLists[_x]+(_y)*50+20;
+     _heightLists[_x]+=item.height;
+     });*!/
+     var indexLists=_tmpIndexList.filter(function (item) {
+     return _this.canvasListSort.indexOf(item)==-1
+     });
+     var sortlength=_this.canvasListSort.length;
+     if(indexLists.length>0){
+     console.log(indexLists);
+     indexLists.forEach(function(item_index,index){
+     var item=_this.Canvas_lists[item_index];
+     var _x=(index+sortlength)%3;
+     item.x=_x*(item.width)+50*(_x+1);
+     var _y=Math.floor((index+sortlength)/3);
+     item.y=_heightLists[_x]+(_y)*50+20;
+     _heightLists[_x]+=item.height;
+     })
+     }
 
-        _this.drawAll();
-    },*/
+     _this.drawAll();
+     },*/
 
     autoSort:function () {
         this.getcanvasListSort();

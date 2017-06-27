@@ -55,10 +55,10 @@
 
      *
      数据类型
-     text:[
-        {name:'1',value:['1','2','3']},
-        {name:'2',value:['sadasd']},
-     ]
+      text:[
+            {name:'1',value:[{data:''}]},
+            {name:'1',value:[{data:''},{data:''}]},
+         ]
      *
      
 

@@ -20,8 +20,8 @@ canvas {
     -o-user-select: none;
     user-select: none;
     overflow: scroll;
-    width: 800px;
-    height: 500px;
+    width: 818px;
+    height: 518px;
     position: relative;
     left: 50%;
     -webkit-transform: translateX(-50%);
