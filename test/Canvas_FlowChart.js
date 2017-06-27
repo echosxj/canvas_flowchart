@@ -133,8 +133,6 @@ function CanvasFlowChart(id,_config){
 
 
         if((text instanceof Array)&&text.length){
-            console.log('changeText:',text);
-            console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
             this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
             console.log('canvas_lists,',this.Canvas_lists);
             this.initCanvas(_this.Canvas_lists);
@@ -275,7 +273,7 @@ CanvasFlowChart.prototype={
 
             };
             //button点击事件
-            canvas.onmouseup = function (e) {
+            /*canvas.onmouseup = function (e) {
                 var clickX = e.clientX - canvas.getBoundingClientRect().left;
                 var clickY = e.clientY - canvas.getBoundingClientRect().top;
                 console.log('mouseup',_this.clickFlag);
@@ -289,7 +287,7 @@ CanvasFlowChart.prototype={
                     }
                 } else{console.log('clickfalse')}
                 _this.drawAll(fixX,fixY);
-            };
+            };*/
         };
         canvas.onmouseout = function () {
             (_this.stopDragging)();
@@ -298,11 +296,12 @@ CanvasFlowChart.prototype={
             _this.endRect=null;
             _this.drawAll()
         };
-        /* canvas.onclick = function(e){
+         canvas.onclick = function(e){
          console.log('click');
          var clickX = e.clientX - canvas.getBoundingClientRect().left;
          var clickY = e.clientY - canvas.getBoundingClientRect().top;
          console.log('mouseup',_this.clickFlag);
+         _this.clickFlag=true;
          var fixX=clickX*_this.ratio;
          var fixY=clickY*_this.ratio;
          if(_this.clickFlag) {
@@ -313,7 +312,7 @@ CanvasFlowChart.prototype={
          }
          } else{console.log('clickfalse')}
          _this.drawAll(fixX,fixY);
-         }*/
+         }
     },
     createRectObj: function createRectObj(x, y, flowName, text,isCurrent) {
         //text:{name:'',value:[{data:'',something:''},{data:'',something:''}]}
@@ -344,6 +343,7 @@ CanvasFlowChart.prototype={
          var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop;*/
         //text:[{name:'',value:['']}]
         var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
+        /*myscale=(_this.canvasInfoChangeIndex!=null?1:myscale);*/
         return{
             x : x/myscale,
             y : y/myscale,
@@ -357,8 +357,32 @@ CanvasFlowChart.prototype={
             mx:0,
             my:0,
             canStartLine : false,
-            changeText : function(_text) {
-                text=_text;
+            changeWH : function() {
+                var _num=0;
+                var context=_this.canvas.getContext('2d');
+                context.save();
+                context.font=_this.flowNameFont;
+                var _tmpnamewidth=context.measureText(flowName).width;
+                context.restore();
+                var _tmpwidth=0;
+
+                for(var _i=0;_i<text.length;_i++){
+                    var _v=text[_i].value;
+                    for(var _j=0;_j<_v.length;_j++){
+                        _num++;
+                        var _vw=Number(context.measureText(_v[_j].data).width);
+                        if(_vw>_tmpwidth){
+                            _tmpwidth=_vw;
+                        }
+                    }
+                }
+                _tmpwidth=_tmpnamewidth>_tmpwidth?_tmpnamewidth:_tmpwidth;
+                var _scale=_this.scaleCount;
+                var _height=text.length?((_num+text.length-1)*16+70+_this.textMarginTop):70+_this.textMarginTop;
+                var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
+                this.width=((_tmpwidth>100?_tmpwidth:100)+2*_this.textMarginLeft+50)/myscale;
+                this.height=_height/myscale;
+                _this.drawAll();
             },
             isCurrent:_iscurrent,
         }
