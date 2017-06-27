@@ -16,6 +16,7 @@ function CanvasFlowChart(id,_config){
     this.startRect_lists=[];
     this.endRect_lists=[];
     this.canvas=document.getElementById(id);
+    this.canvasId=id;
     //this.context=this.canvas.getContext('2d');
     //在需要用context的地方用this.canvas.getContext('2d')
     //首页颜色
@@ -1268,7 +1269,7 @@ CanvasFlowChart.prototype={
 
         }
     },
-    PromiseTest:function () {
+    /*PromiseTest:function () {
         var _this=this;
         return new Promise(function (resolve,reject) {
             alert('123');
@@ -1288,94 +1289,148 @@ CanvasFlowChart.prototype={
                 _this.Canvas_lists[_this.canvasInfoChangeIndex].text=data;
                 _this.drawAll();
             })
-    },
+    },*/
     //创建按钮区域
     createButtonArea: function(){
         var btnString=
-            '<div id="canvas_toolbar">'+
-            '<button id="canvas_btn_addRect" class="canvas_btn" title="新增流程框" ><div></div></button>'+
-            '<button id="canvas_btn_autoSort" class="canvas_btn" title="自动排序" ><div></div></button> '+
-            '<button id="canvas_btn_toggleDrawLine" class="canvas_btn" title="连线"  ><div></div></button>'+
-            '<button id="canvas_btn_toggleDeleteLine" class="canvas_btn" title="删除连线" ><div></div></button>'+
-            '<button id="canvas_btn_toggleDragRect" class="canvas_btn" title="选中" ><div></div></button>'+
-           // '<button id="canvas_btn_outputData" class="canvas_btn" title="输出流程信息"><div></div></button>'+
-            '<button id="canvas_btn_enlarge" class="canvas_btn" title="放大图片"><div></div></button>'+
-            '<button id="canvas_btn_shrink" class="canvas_btn" title="缩小图片"><div></div></button>'+
-            '<button id="canvas_btn_recovery" class="canvas_btn" title="恢复图片"><div></div></button>'+
-            '<button id="canvas_btn_addHeight" class="canvas_btn" title="增加区域高度"><div></div></button>'+
-            '<button id="canvas_btn_reduceHeight" class="canvas_btn" title="减小区域高度"><div></div></button>'+
-            '</button> <button id="canvas_btn_addWidth" class="canvas_btn" title="增加区域宽度"><div></div></button>'+
-            '<button id="canvas_btn_reduceWidth" class="canvas_btn" title="减小区域宽度"><div></div></button> '+
-            '<button id="canvas_btn_clearAll" class="canvas_btn" title="清空流程图" ><div></div></button>'+
-            '<button id="canvas_btn_test" class="canvas_btn"  title="快速生成模板"><div></div></button>' +
+            '<div class="canvas_toolbar">'+
+            '<button  class="canvas_btn canvas_btn_addRect" title="新增流程框" ><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_autoSort" title="自动排序" ><div></div></button> '+
+            '<button  class="canvas_btn canvas_btn_toggleDrawLine" title="连线"  ><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_toggleDeleteLine" title="删除连线" ><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_toggleDragRect" title="选中" ><div></div></button>'+
+           // '<button  class="canvas_btn canvas_btn_outputData" title="输出流程信息"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_enlarge" title="放大图片"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_shrink" title="缩小图片"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_recovery" title="恢复图片"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_addHeight" title="增加区域高度"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_reduceHeight" title="减小区域高度"><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_addWidth" title="增加区域宽度"><div></div></button >'+
+            '<button  class="canvas_btn canvas_btn_reduceWidth" title="减小区域宽度"><div></div></button> '+
+            '<button  class="canvas_btn canvas_btn_clearAll" title="清空流程图" ><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_test"  title="快速生成模板"><div></div></button>' +
             '</div>';
+        var _this=this;
         if(this.putCanvasBtnId==null){
             $(btnString).insertAfter($(this.canvas));
+//$('#canvas_flowchart +.downloadCanvasImg+ .canvas_toolbar>.canvas_btn')
+            var canvasId=this.canvasId;
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_test').on('click',function () {
+                _this.initCanvas(c.testList);
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_addRect').on('click',function () {
+                _this.addRandomRect();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_clearAll').on('click',function () {
+                _this.clearCanvas();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_toggleDragRect').on('click',function () {
+                _this.toggleDragRect();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_toggleDrawLine').on('click',function () {
+                _this.toggleDrawLine();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_toggleDeleteLine').on('click',function () {
+                _this.toggleDeleteLine();
+            });
+            /* $('#'+canvasId+' .canvas_btn_outputData').on('click',function () {
+             var data=_this.outputData();
+             //var data='1';
+             $('#showData').text(String(data));
+             });*/
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_saveImg').on('click',function () {
+                _this.savaAsJPEG();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_addHeight').on('click',function(){
+                _this.addCanvasHeight();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_reduceHeight').on('click',function(){
+                _this.reduceCanvasHeight();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_addWidth').on('click',function(){
+                _this.addCanvasWidth();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_reduceWidth').on('click',function(){
+                _this.reduceCanvasWidth();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_autoSort').on('click',function(){
+                _this.autoSort();
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_enlarge').on('click',function(){
+                _this.changeScale(1)
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_shrink').on('click',function(){
+                _this.changeScale(-1)
+            });
+            $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_recovery').on('click',function(){
+                _this.changeScale(0)
+            })
         }else{
-            console.log($('#'+this.putCanvasBtnId))
-            $('#'+this.putCanvasBtnId).append($(btnString))
+            $('#'+this.putCanvasBtnId).append($(btnString));
+            var btnId=this.putCanvasBtnId;
+            console.log(btnId)
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_test').on('click',function () {
+                _this.initCanvas(c.testList);
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_addRect').on('click',function () {
+                _this.addRandomRect();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_clearAll').on('click',function () {
+                _this.clearCanvas();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_toggleDragRect').on('click',function () {
+                _this.toggleDragRect();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_toggleDrawLine').on('click',function () {
+                _this.toggleDrawLine();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_toggleDeleteLine').on('click',function () {
+                _this.toggleDeleteLine();
+            });
+            /* $('#'+btnId+' .canvas_btn_outputData').on('click',function () {
+             var data=_this.outputData();
+             //var data='1';
+             $('#showData').text(String(data));
+             });*/
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_saveImg').on('click',function () {
+                _this.savaAsJPEG();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_addHeight').on('click',function(){
+                _this.addCanvasHeight();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_reduceHeight').on('click',function(){
+                _this.reduceCanvasHeight();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_addWidth').on('click',function(){
+                _this.addCanvasWidth();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_reduceWidth').on('click',function(){
+                _this.reduceCanvasWidth();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_autoSort').on('click',function(){
+                _this.autoSort();
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_enlarge').on('click',function(){
+                _this.changeScale(1)
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_shrink').on('click',function(){
+                _this.changeScale(-1)
+            });
+            $('#'+btnId+'>.canvas_toolbar> .canvas_btn_recovery').on('click',function(){
+                _this.changeScale(0)
+            })
         }
 
-        var _this=this;
-        $('#canvas_btn_test').on('click',function () {
-            _this.initCanvas(c.testList);
-        });
-        $('#canvas_btn_addRect').on('click',function () {
-            _this.addRandomRect();
-        });
-        $('#canvas_btn_clearAll').on('click',function () {
-            _this.clearCanvas();
-        });
-        $('#canvas_btn_toggleDragRect').on('click',function () {
-            _this.toggleDragRect();
-        });
-        $('#canvas_btn_toggleDrawLine').on('click',function () {
-            _this.toggleDrawLine();
-        });
-        $('#canvas_btn_toggleDeleteLine').on('click',function () {
-            _this.toggleDeleteLine();
-        });
-        $('#canvas_btn_outputData').on('click',function () {
-            var data=_this.outputData();
-            //var data='1';
-            $('#showData').text(String(data));
-        });
-        $('#canvas_btn_saveImg').on('click',function () {
-            _this.savaAsJPEG();
-        });
-        $('#canvas_btn_addHeight').on('click',function(){
-            _this.addCanvasHeight();
-        });
-        $('#canvas_btn_reduceHeight').on('click',function(){
-            _this.reduceCanvasHeight();
-        });
-        $('#canvas_btn_addWidth').on('click',function(){
-            _this.addCanvasWidth();
-        });
-        $('#canvas_btn_reduceWidth').on('click',function(){
-            _this.reduceCanvasWidth();
-        });
-        $('#canvas_btn_autoSort').on('click',function(){
-            _this.autoSort();
-        });
-        $('#canvas_btn_enlarge').on('click',function(){
-            _this.changeScale(1)
-        });
-        $('#canvas_btn_shrink').on('click',function(){
-            _this.changeScale(-1)
-        });
-        $('#canvas_btn_recovery').on('click',function(){
-            _this.changeScale(0)
-        })
+
     },
     //保存图片
     createDownloadArea:function(){
         var _this=this;
-        $('<a id="downloadCanvasImg" href="" download="canvasImg.jpeg" style="display: none"> <img id="canvasImg" src="" alt="" style="display: none"> </a>').insertAfter(_this.canvas)
+        $('<a class="downloadCanvasImg" href="" download="canvasImg.jpeg" style="display: none"> <img class="canvasImg" src="" alt="" style="display: none"> </a>').insertAfter(_this.canvas)
     },
     savaAsJPEG:function () {
-        var image = document.getElementById('canvasImg');
-        var download = document.getElementById('downloadCanvasImg');
+        var image = document.getElementById('#'+this.canvasId+' + .canvasImg');
+        var download = document.getElementById('#'+this.canvasId+' + .downloadCanvasImg');
         var imgData=this.canvas.toDataURL("image/jpeg");
         image.src = imgData;
         download.href= imgData;
