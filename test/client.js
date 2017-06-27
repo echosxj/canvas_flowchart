@@ -76,8 +76,12 @@ c.myClickEvent=function () {
 $('#changeRectBtn').on ('click',function () {
     var newdata=[{
         name:$('#changeRectName').val(),
-        value:[$('#changeRectValue').val()]
+        value:[{data:$('#changeRectValue').val()}]
     }];
     c.changeRectInfo(newdata);
     $('#changeArea').hide();
 });
+
+
+/*
+c.onchangedRectText*/

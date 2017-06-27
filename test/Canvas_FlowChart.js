@@ -76,45 +76,64 @@ function CanvasFlowChart(id,_config){
 
 
     this.testList=[
-        {x: 10, y: 10, flowName:'初审', text: [{name:'是否会审', value: ['是'],something:'2131231'},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
-        {x: 280, y: 10,flowName:'复审', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}],isCurrent:false},
-        {x: 540, y: 10,flowName:' ', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2', '李2']}],isCurrent:true},
-        {x: 260, y: 300,flowName:'11111111111111111111111', text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
-        {x: 500, y: 300, text: [{name:'是否会审', value: ['是']},{name:'审批人', value: ['王一', '李2']}]},
+        {x: 10, y: 10, flowName:'初审',
+            text: [
+                {name:'是否会审', value: [{data:'是',something:'2131231'}],st:''},
+                {
+                    name:'审批人',
+                    value: [
+                        {data:'wang',something:'2131231',userId:'1'},
+                        {data:'wang',something:'2131231',userId:'121'}
+                    ],
+                    st:'',isCurrent:false
+                }
+                ]
+        },
+        {x: 280, y: 10,flowName:'复审',
+            text: [
+                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'审批人',
+                    value: [
+                        {data:'wang',something:'2131231',userId:'1dsadasda'},
+                    ],st:'',isCurrent:false
+                }
+                ]
+        },
+        {x: 280, y: 10,flowName:'复审',
+            text: [
+                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'审批人',
+                    value: [
+                        {data:'wang',something:'2131231',userId:'1das'},
+                        {data:'wang',something:'2131231',userId:'1x'},
+                        {data:'wang',something:'2131231',userId:'1dsaaa'},
+                        {data:'wang',something:'2131231',userId:'21'},
+                        {data:'wang',something:'2131231',userId:'132'},
+                        {data:'wang',something:'2131231',userId:'144'},
+                    ],st:'',isCurrent:false
+                }
+            ]
+        },
+        {x: 280, y: 10,flowName:'复审',
+            text: [
+                {name:'是否会审', value: [{data:'否',something:'2131231'}],st:''},
+                {name:'审批人',
+                    value: [
+                        {data:'wang',something:'2131231',userId:'31'},
+                        {data:'wang',something:'2131231',userId:'32'},
+                        {data:'wang',something:'2131231',userId:'33'},
+                    ],st:'',isCurrent:false
+                }
+            ]
+        },
     ];
     //给定text修改index=i的rect
     this.changeRectInfo=function (newText) {
         var text=newText||this.willReplaceRectText;
         if(newText){this.willReplaceRectText=newText};
         var _this=this;
-        //添加确认
-        /*/!*var _confirm=confirm('确认是否修改');*!/
-        console.log('confirm',_this.confirm);
-        var _confirm=null;
-        if(!_this.confirm){
-            _this.confirm=true;
-            _confirm=confirm('确认是否修改');
-            if(_confirm===true){
-                if((text instanceof Array)&&text.length){
-                    console.log('changeText:',text);
-                    console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
-                    this.Canvas_lists[_this.canvasInfoChangeIndex].text=text;
-                    console.log('canvas_lists,',this.Canvas_lists);
-                    this.drawAll();
-                    this.initCanvas(this.Canvas_lists.slice(0));
-                    //初始化
-                    /!*this.canvasInfoChangeIndex=null;
-                     this.onchangedRectText=[{}];
-                     this.willReplaceRectText=[{}];*!/
-                }else{
-                    alert('修改数据错误，信息应该为数组')
-                }
-                _this.confirm=false;
-            }
-        }
-        //_this.confirm=confirm('确认是否修改');*/
-        var _confirm=confirm('确认是否修改');
-        if(_confirm){
+
+
             if((text instanceof Array)&&text.length){
                 console.log('changeText:',text);
                 console.log('this old text,',this.Canvas_lists[_this.canvasInfoChangeIndex][text]);
@@ -130,9 +149,6 @@ function CanvasFlowChart(id,_config){
             }else{
                 alert('修改数据错误，信息应该为数组')
             }
-
-        }
-        _confirm=null;
 
         _this.drawAll();
 
@@ -302,22 +318,21 @@ CanvasFlowChart.prototype={
         }*/
     },
     createRectObj: function createRectObj(x, y, flowName, text,isCurrent) {
+        //text:{name:'',value:[{data:'',something:''},{data:'',something:''}]}
         var _this=this;
         var _num=0;
         var context=this.canvas.getContext('2d');
-        var _tmptextwidth=0;
         context.save();
         context.font=_this.flowNameFont;
         var _tmpnamewidth=context.measureText(flowName).width;
         context.restore();
-        var _tmpvaluewidth=0;
         var _tmpwidth=0;
 
         for(var _i=0;_i<text.length;_i++){
             var _v=text[_i].value;
             for(var _j=0;_j<_v.length;_j++){
                 _num++;
-                var _vw=Number(context.measureText(_v[_j]).width);
+                var _vw=Number(context.measureText(_v[_j].data).width);
                 if(_vw>_tmpwidth){
                     _tmpwidth=_vw;
                 }
@@ -331,8 +346,6 @@ CanvasFlowChart.prototype={
         var _height=_height_add*(_this.ValueFontSize+_this.textGapHeight)+_this.NameFontSize+_this.flowNameFontSize+_this.textMarginTop;*/
         //text:[{name:'',value:['']}]
         var myscale=(_scale<0)?Math.pow((_this.scale),Math.abs(_scale)):Math.pow((1/_this.scale),Math.abs(_scale));
-
-        console.log('scaled',myscale);
         return{
             x : x/myscale,
             y : y/myscale,
@@ -387,17 +400,10 @@ CanvasFlowChart.prototype={
         this.drawAll();
     },
     addRandomRect:function () {
-        /*var _this=this;
-        var myscale=_this.scaleCount<0?Math.pow((_this.scale),Math.abs(_this.scaleCount)):Math.pow((1/_this.scale),Math.abs(_this.scaleCount));_this.scaleCount=0;*/
         // 一个随机大小和位置
         var x = 300;
         var y = 200;
-
-        // 一个随机颜色
-       /* var colors = ["green", "blue", "red", "yellow", "magenta", "orange", "brown", "purple", "pink"];
-        var color = colors[this.randomFromTo(0, 8)];*/
-
-        var rect = this.createRectObj(x, y,'新增流程' ,[{name:'是否会审',value:' '},{name:'审批人',value:' '}]);
+        var rect = this.createRectObj(x, y,'新增流程' ,[{name:'是否会审',value:[{data:''}]},{name:'审批人',value:[{data:''}]}]);
         // 把它保存在数组中
         this.Canvas_lists.push(rect);
         this.toggleDragRect();
@@ -582,7 +588,7 @@ CanvasFlowChart.prototype={
                         context.font=_this.ValueFont;
                         var _tmpvalueWidth=context.measureText(String(textObj.value[valueIndex]));
                         if(_tmpvalueWidth>valueWidth){valueWidth=_tmpvalueWidth}
-                        context.fillText(String(textObj.value[valueIndex]),_this.textMarginLeft+Number(nameWidth),_textMarginTop+_this.textGapHeight*(allValueNum));
+                        context.fillText(String(textObj.value[valueIndex].data),_this.textMarginLeft+Number(nameWidth),_textMarginTop+_this.textGapHeight*(allValueNum));
                         context.restore();
                     }
 
@@ -618,9 +624,6 @@ CanvasFlowChart.prototype={
 
             /*制作button*/
             //button位置
-            // button之间的间隔是5
-            /*var buttonName_lists=['删除上连接','删除下连接','修改信息'];
-             var buttonGap = 5,buttonWidth=70,buttonHeight=30;*/
             _this.buttonName_lists.map(function (item,index) {
                 context.save();
                 context.beginPath();
@@ -889,50 +892,9 @@ CanvasFlowChart.prototype={
                         }
                     })(i);
                 }
-
-                /*如果选项是删除连线，则删除*/
-
-
-                /*之前的*/
-                /*if (this.previousSelectedRect != null) {this.previousSelectedRect.isSelected = false;}
-                 rect.mx = clickX - rect.x;
-                 rect.my = clickY - rect.y;
-                 this.previousSelectedRect = rect;
-
-                 rect.isSelected = true;
-
-                 this.isDragging = true;
-
-                 drawAll(x,y);
-
-                 return;*/
             }
         }
-        //判断是否在圆圈内，
-        /* for(var i=this.Canvas_lists.length-1; i>=0; i--) {
-         var rect = this.Canvas_lists[i];
-         //判断左边圆圈
-         var distanseLeftCicle = Math.sqrt(Math.pow(rect.x - this.cicleRadius - clickX, 2)
-         + Math.pow(rect.y + rect.height/2 - clickY, 2));
-         if(distanseLeftCicle<=this.cicleRadius){
-         console.log('distanse left')
-         };
-         //判断右边边圆圈
-         var distanseRightCicle = Math.sqrt(Math.pow(rect.x + rect.width + this.cicleRadius - clickX, 2)
-         + Math.pow(rect.y + rect.height/2 - clickY, 2));
-         if(distanseRightCicle<=this.cicleRadius){
-         console.log('distanse right');
-         this.canLineDraw = true;
-         //目前先只支持右圆圈指向左圆圈
-         // i值因为闭包需要匿名执行
-         (function (i) {
-         if(this.startRect_lists.indexOf(i)==-1){
-         this.startRect = i;
-         console.log('this.startRect',i);
-         }
-         })(i)
-         }
-         }*/
+
     },
     canvasClickButton:function (e) {
         var context=this.canvas.getContext('2d');
@@ -1472,7 +1434,7 @@ CanvasFlowChart.prototype={
         var _x=0;
         var _y=0;
         var _max_y=0;
-        var _gap=30;
+        var _gap=50;
 
         list_last.forEach(function (rectIndex,index) {
             var item=_canvaslist[rectIndex];
@@ -1509,6 +1471,16 @@ CanvasFlowChart.prototype={
             console.log('reduce');
             _this.reduceCanvasHeight();
             canvasY-=_this.detalCanvasHeight;
+        }
+        while(_x>canvasX-_this.detalCanvasWidth){
+            console.log('add')
+            _this.addCanvasWidth();
+            canvasX+=_this.detalCanvasWidth;
+        }
+        while(_x<(canvasX-_this.detalCanvasWidth)){
+            console.log('reduce');
+            _this.reduceCanvasWidth();
+            canvasX-=_this.detalCanvasWidth;
         }
         this.drawAll();
     },
