@@ -1316,7 +1316,7 @@ CanvasFlowChart.prototype={
 //$('#canvas_flowchart +.downloadCanvasImg+ .canvas_toolbar>.canvas_btn')
             var canvasId=this.canvasId;
             $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_test').on('click',function () {
-                _this.initCanvas(c.testList);
+                _this.initCanvas(_this.testList);
             });
             $('#'+canvasId+'+.downloadCanvasImg+ .canvas_toolbar> .canvas_btn_addRect').on('click',function () {
                 _this.addRandomRect();
@@ -1370,7 +1370,7 @@ CanvasFlowChart.prototype={
             var btnId=this.putCanvasBtnId;
             console.log(btnId)
             $('#'+btnId+'>.canvas_toolbar> .canvas_btn_test').on('click',function () {
-                _this.initCanvas(c.testList);
+                _this.initCanvas(_this.testList);
             });
             $('#'+btnId+'>.canvas_toolbar> .canvas_btn_addRect').on('click',function () {
                 _this.addRandomRect();
