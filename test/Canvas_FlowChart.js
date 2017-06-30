@@ -1104,6 +1104,20 @@ CanvasFlowChart.prototype={
             }
         });
 
+        //处理i=0 其他都互联的bug
+        var needDelIndex=null;
+        for(var _index=0;_index<_this.line_lists.length;_index++){
+            if(_this.line_lists[_index][1]==0){
+                needDelIndex=_this.line_lists[_index][0];
+                _this.line_lists.splice(_index,1)
+            }
+        }
+        _this.endRect_lists.splice(0,1);
+        _this.endRect_lists.sort();
+
+        if(needDelIndex!=null){
+            _this.startRect_lists=_this.startRect_lists.filter(function(item){return item!=needDelIndex})
+        }
 
 
         this.drawAll();
@@ -1308,6 +1322,7 @@ CanvasFlowChart.prototype={
             '<button  class="canvas_btn canvas_btn_addWidth" title="增加区域宽度"><div></div></button >'+
             '<button  class="canvas_btn canvas_btn_reduceWidth" title="减小区域宽度"><div></div></button> '+
             '<button  class="canvas_btn canvas_btn_clearAll" title="清空流程图" ><div></div></button>'+
+            '<button  class="canvas_btn canvas_btn_saveImg" title="保存照片" ><div></div></button>'+
             '<button  class="canvas_btn canvas_btn_test"  title="快速生成模板"><div></div></button>' +
             '</div>';
         var _this=this;
